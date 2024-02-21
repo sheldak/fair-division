@@ -1,0 +1,68 @@
+def print_allocation(allocation):
+    for agent, bundle in allocation:
+        print(f"{agent}: {bundle}")
+
+
+def print_valuations(agents, items, max_value):
+    row_length = number_length(agents.size()) + 1
+    column_length = number_length(max(max_value, items.size() * 10))
+
+    table = f"{generate_header(items, row_length, column_length)}\n"
+
+    for agent_index in sorted(agents.get_indices()):
+        agent = agents.get_agent(agent_index)
+        table += f"{generate_row(agent, items, row_length, column_length)}\n"
+
+    print(table)
+    
+
+def generate_header(items, row_length, column_length):
+    # first line
+    header = " " * row_length + " |"
+
+    for item_index in sorted(items.get_indices()):
+        item_length = number_length(item_index) + 1
+        empty = " " * (column_length - item_length)
+
+        header += f" g{item_index}{empty} |"
+
+    # second line
+    header += "\n" + "-" * row_length + "-|"
+    for _ in items:
+        dashes = "-" * column_length
+        header += f"-{dashes}-|"
+
+    return header
+
+
+def generate_row(agent, items, row_length, column_length):
+    agent_index = agent.get_index()
+
+    agent_length = number_length(agent_index) + 1
+    empty = " " * (row_length - agent_length)
+
+    row = f"a{agent_index}{empty} |"
+
+    for item_index in sorted(items.get_indices()):
+        item = items.get_item(item_index)
+        valuation = agent.get_valuation(item)
+
+        valuation_length = number_length(valuation)
+        empty = " " * (column_length - valuation_length)
+
+        row += f" {valuation}{empty} |"
+
+    return row
+
+
+def number_length(number):
+    if number == 0:
+        return 1
+
+    length = 0
+    
+    while number > 0:
+        length += 1
+        number //= 10
+
+    return length

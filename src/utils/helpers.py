@@ -1,9 +1,15 @@
-def print_allocation(allocation):
+from utils.agent import Agent
+from utils.agents import Agents
+from utils.allocation import Allocation
+from utils.items import Items
+
+
+def print_allocation(allocation: Allocation) -> None:
     for agent, bundle in allocation:
         print(f"{agent}: {bundle}")
 
 
-def print_valuations(agents, items, max_value):
+def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
     row_length = number_length(agents.size()) + 1
     column_length = number_length(max(max_value, items.size() * 10))
 
@@ -16,7 +22,7 @@ def print_valuations(agents, items, max_value):
     print(table)
     
 
-def generate_header(items, row_length, column_length):
+def generate_header(items: Items, row_length: int, column_length: int) -> str:
     # first line
     header = " " * row_length + " |"
 
@@ -35,7 +41,7 @@ def generate_header(items, row_length, column_length):
     return header
 
 
-def generate_row(agent, items, row_length, column_length):
+def generate_row(agent: Agent, items: Items, row_length: int, column_length: int) -> str:
     agent_index = agent.get_index()
 
     agent_length = number_length(agent_index) + 1
@@ -55,7 +61,7 @@ def generate_row(agent, items, row_length, column_length):
     return row
 
 
-def number_length(number):
+def number_length(number: int) -> int:
     if number == 0:
         return 1
 

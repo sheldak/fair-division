@@ -1,4 +1,12 @@
-def is_ef(agents, allocation):
+from typing import Literal
+
+from utils.agent import Agent
+from utils.agents import Agents
+from utils.allocation import Allocation
+from utils.bundle import Bundle
+
+
+def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
     for agent_1 in agents:
         for agent_2 in agents:
             if agent_1 != agent_2:
@@ -11,7 +19,7 @@ def is_ef(agents, allocation):
     return True
 
 
-def is_efx(agents, allocation):
+def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
     for agent_1 in agents:
         for agent_2 in agents:
             if agent_1 != agent_2:
@@ -29,7 +37,7 @@ def is_efx(agents, allocation):
     return True
 
 
-def is_ef1(agents, allocation):
+def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
     for agent_1 in agents:
         for agent_2 in agents:
             if agent_1 != agent_2:
@@ -49,7 +57,7 @@ def is_ef1(agents, allocation):
     return True
 
 
-def valuation_of_bundle(agent, bundle):
+def valuation_of_bundle(agent: Agent, bundle: Bundle) -> int:
     valuation = 0
     for item in bundle:
         valuation += agent.get_valuation(item)

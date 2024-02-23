@@ -1,8 +1,22 @@
-def round_robin(agents, allocation, items, ordering, steps="inf"):
+from typing import Literal
+
+from utils.agent import Agent
+from utils.agents import Agents
+from utils.allocation import Allocation
+from utils.item import Item
+from utils.items import Items
+
+
+def round_robin(
+        agents: Agents, 
+        allocation: Allocation, 
+        items: Items, 
+        ordering: list[int], 
+        steps: int | Literal["inf"] = "inf") -> tuple[Allocation, Items]:
     step = 0
     while items.size() > 0 and (steps == "inf" or step < steps):
         agent = agents.get_agent(ordering[step % agents.size()])
-        favorite_item = get_favorite_item(agent, items)
+        favorite_item = agent.get_favorite_item(items)
         
         allocation.allocate(agent, favorite_item)
 
@@ -11,13 +25,3 @@ def round_robin(agents, allocation, items, ordering, steps="inf"):
         step += 1
 
     return (allocation, items)
-
-
-def get_favorite_item(agent, items):
-    favorite_item = None
-    
-    for item in items:
-        if favorite_item is None or agent.get_valuation(item) > agent.get_valuation(favorite_item):
-            favorite_item = item
-
-    return favorite_item

@@ -1,6 +1,6 @@
 class Item:
-    def __init__(self, index):
-        self.index = index
+    def __init__(self, index: int):
+        self.index: int = index
 
     def __hash__(self):
         return hash(self.index)
@@ -14,5 +14,5 @@ class Item:
     def __str__(self):
         return repr(self)
     
-    def get_index(self):
+    def get_index(self) -> int:
         return self.index

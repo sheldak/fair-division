@@ -1,9 +1,14 @@
+from io import TextIOWrapper
+
+from utils.agent import Agent
+from utils.agents import Agents
 from utils.generator import generate_agents, generate_items
+from utils.items import Items
 
 
 RESTRICTIONS = ["additive"]
 
-def import_from_file(file_path):
+def import_from_file(file_path: str) -> tuple[Agents, Items]:
     with open(file_path, "r") as file:
         lines = split_into_lines(file)
 
@@ -24,13 +29,13 @@ def import_from_file(file_path):
         return agents, items
 
 
-def parse_restrictions(line):
+def parse_restrictions(line: str) -> list[str]:
     restrictions = list(filter(lambda restriction: restriction in RESTRICTIONS, split_and_strip(line)))
 
     return restrictions
 
 
-def parse_agents_and_items(line):
+def parse_agents_and_items(line: str) -> tuple[int, int]:
     line_as_list = split_and_strip(line)
     if len(line_as_list) != 2:
         raise Exception(f"Expected a number of agents and a number of items in the second line, got {line}")
@@ -38,7 +43,7 @@ def parse_agents_and_items(line):
     return int(line_as_list[0]), int(line_as_list[1])
 
 
-def parse_valuations(line, agent, items):
+def parse_valuations(line: str, agent: Agent, items: Items) -> None:
     valuations = [int(valuation) for valuation in split_and_strip(line)]
 
     if len(valuations) != items.size():
@@ -49,11 +54,11 @@ def parse_valuations(line, agent, items):
         agent.assign_valuation(items.get_item(item_number), valuations[i])
 
 
-def split_into_lines(file):
+def split_into_lines(file: TextIOWrapper) -> list[str]:
     stripped_lines = [line.strip() for line in file.read().split("\n")]
 
     return list(filter(lambda line: len(line) > 0, stripped_lines))
 
 
-def split_and_strip(line):
+def split_and_strip(line: str) -> list[str]:
     return [word.strip() for word in line.split(" ")]

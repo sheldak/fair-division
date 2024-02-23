@@ -8,8 +8,8 @@ from round_robin import round_robin
 from utils.importer import import_from_file
 
 
-# a, i = import_from_file("instances/simple.txt")
-# print_valuations(a, i, 10)
+a, i = import_from_file("instances/simple.txt")
+print_valuations(a, i, 10)
 
 # seed = 41569
 seed = random.randint(1, 100_000)

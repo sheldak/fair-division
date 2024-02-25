@@ -1,11 +1,11 @@
 from __future__ import annotations
-from typing import Optional, TYPE_CHECKING
+from typing import Iterator, Optional, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from utils.agent import Agent
+    from fairdivision.utils.agent import Agent
 
-from utils.item import Item
-from utils.items import Items
+from fairdivision.utils.item import Item
+from fairdivision.utils.items import Items
 
 
 class Bundle:
@@ -34,7 +34,7 @@ class Bundle:
     def __str__(self):
         return repr(self)
     
-    def __iter__(self):
+    def __iter__(self) -> Iterator[Item]:
         return self.items.__iter__()
     
     def __contains__(self, item):

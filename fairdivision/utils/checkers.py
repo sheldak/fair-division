@@ -1,9 +1,9 @@
 from typing import Literal
 
-from utils.agent import Agent
-from utils.agents import Agents
-from utils.allocation import Allocation
-from utils.bundle import Bundle
+from fairdivision.utils.agent import Agent
+from fairdivision.utils.agents import Agents
+from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.bundle import Bundle
 
 
 def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:

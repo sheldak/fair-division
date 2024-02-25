@@ -1,4 +1,6 @@
-from utils.agent import Agent
+from typing import Iterator
+
+from fairdivision.utils.agent import Agent
 
 
 class Agents:
@@ -6,8 +8,8 @@ class Agents:
         self.agents: dict[int, Agent] = {}
         self.initialize_agents(agents_list)
 
-    def __iter__(self):
-        return list(self.get_agents()).__iter__()
+    def __iter__(self) -> Iterator[Agent]:
+        return self.get_agents().__iter__()
 
     def initialize_agents(self, agents_list: list[Agent]) -> None:
         for agent in agents_list:

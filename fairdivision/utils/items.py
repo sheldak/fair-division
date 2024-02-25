@@ -1,6 +1,7 @@
 from __future__ import annotations
+from typing import Iterator
 
-from utils.item import Item
+from fairdivision.utils.item import Item
 
 
 class Items:
@@ -8,11 +9,17 @@ class Items:
         self.items: dict[int, Item] = {}
         self.initialize_items(items_list)
 
-    def __iter__(self):
-        return list(self.get_items()).__iter__()
+    def __iter__(self) -> Iterator[Item]:
+        return self.get_items().__iter__()
     
     def __contains__(self, item):
         return item in self.get_items()
+    
+    def __repr__(self):
+        return f"Items({self.get_items()})"
+    
+    def __str__(self):
+        return repr(self)
     
     def copy(self) -> Items:
         return Items(self.get_items().copy())

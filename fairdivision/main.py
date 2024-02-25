@@ -1,15 +1,11 @@
 import random
 
-from utils.allocation import Allocation
-from utils.checkers import *
-from utils.generator import *
-from utils.helpers import print_allocation, print_valuations
-from round_robin import round_robin
-from utils.importer import import_from_file
+from fairdivision.round_robin import round_robin
+from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.checkers import *
+from fairdivision.utils.generator import *
+from fairdivision.utils.helpers import print_allocation, print_valuations
 
-
-a, i = import_from_file("instances/simple.txt")
-print_valuations(a, i, 10)
 
 # seed = 41569
 seed = random.randint(1, 100_000)

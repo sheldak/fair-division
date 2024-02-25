@@ -9,6 +9,18 @@ After cloning the repository, run the following command in the main directory:
 
 
 ## Usage
-Edit and run `src/main.py` script:
+Edit and run `fairdivision/main.py` script:
 
-    python src/main.py
+    python fairdivision/main.py
+
+
+## Type checking
+Run:
+
+    mypy fairdivision/main.py
+
+
+## Running tests
+Edit and run `fairdivision/main.py` script:
+
+    python -m pytest

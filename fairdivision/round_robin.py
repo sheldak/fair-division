@@ -1,12 +1,12 @@
 from typing import Literal
 
-from utils.agent import Agent
-from utils.agents import Agents
-from utils.allocation import Allocation
-from utils.item import Item
-from utils.items import Items
+from fairdivision.utils.agents import Agents
+from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.items import Items
 
 
+# Implementation of Algorithm 2 from "Multiple birds with one stone: Beating 1/2 for EFX and GMMS via envy cycle
+# elimination" by G. Amanatidis et al.
 def round_robin(
         agents: Agents, 
         allocation: Allocation, 

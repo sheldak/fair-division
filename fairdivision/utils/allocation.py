@@ -1,8 +1,10 @@
-from utils.agent import Agent
-from utils.agents import Agents
-from utils.bundle import Bundle
-from utils.item import Item
-from utils.items import Items
+from typing import Iterator
+
+from fairdivision.utils.agent import Agent
+from fairdivision.utils.agents import Agents
+from fairdivision.utils.bundle import Bundle
+from fairdivision.utils.item import Item
+from fairdivision.utils.items import Items
 
 
 class Allocation:
@@ -10,8 +12,14 @@ class Allocation:
         self.allocation: dict[Agent, Bundle] = {}
         self.initialize_allocation(agents)
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[tuple[Agent, Bundle]]:
         return self.get_allocation().__iter__()
+    
+    def __repr__(self):
+        return f"Allocation({self.allocation})"
+    
+    def __str__(self):
+        return repr(self)
 
     def initialize_allocation(self, agents: Agents) -> None:
         for agent in agents:

@@ -1,6 +1,6 @@
-from utils.bundle import Bundle
-from utils.item import Item
-from utils.items import Items
+from fairdivision.utils.bundle import Bundle
+from fairdivision.utils.item import Item
+from fairdivision.utils.items import Items
 
 
 class Agent:

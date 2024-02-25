@@ -1,14 +1,15 @@
 from io import TextIOWrapper
 
-from utils.agent import Agent
-from utils.agents import Agents
-from utils.generator import generate_agents, generate_items
-from utils.items import Items
+from fairdivision.utils.agent import Agent
+from fairdivision.utils.agents import Agents
+from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.generator import generate_agents, generate_items
+from fairdivision.utils.items import Items
 
 
 RESTRICTIONS = ["additive"]
 
-def import_from_file(file_path: str) -> tuple[Agents, Items]:
+def import_from_file(file_path: str) -> tuple[Agents, Items, list[str]]:
     with open(file_path, "r") as file:
         lines = split_into_lines(file)
 
@@ -26,7 +27,7 @@ def import_from_file(file_path: str) -> tuple[Agents, Items]:
                 agent_number = i - 1
                 parse_valuations(lines[i], agents.get_agent(agent_number), items)
         
-        return agents, items
+        return agents, items, restrictions
 
 
 def parse_restrictions(line: str) -> list[str]:
@@ -62,3 +63,15 @@ def split_into_lines(file: TextIOWrapper) -> list[str]:
 
 def split_and_strip(line: str) -> list[str]:
     return [word.strip() for word in line.split(" ")]
+
+
+def import_allocation_from_dict(agents: Agents, items: Items, allocation_dict: dict[int, list[int]]) -> Allocation:
+    allocation = Allocation(agents)
+    
+    for agent_index, bundle_list in allocation_dict.items():
+        agent = agents.get_agent(agent_index)
+
+        for item_index in bundle_list:
+            allocation.allocate(agent, items.get_item(item_index))
+
+    return allocation

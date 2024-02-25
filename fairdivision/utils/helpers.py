@@ -1,7 +1,7 @@
-from utils.agent import Agent
-from utils.agents import Agents
-from utils.allocation import Allocation
-from utils.items import Items
+from fairdivision.utils.agent import Agent
+from fairdivision.utils.agents import Agents
+from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.items import Items
 
 
 def print_allocation(allocation: Allocation) -> None:

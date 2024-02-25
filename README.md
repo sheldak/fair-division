@@ -15,12 +15,12 @@ Edit and run `fairdivision/main.py` script:
 
 
 ## Type checking
-Run:
+Run the following in the main directory:
 
     mypy fairdivision/main.py
 
 
 ## Running tests
-Edit and run `fairdivision/main.py` script:
+Run the following in the main directory:
 
     python -m pytest

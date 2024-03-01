@@ -7,59 +7,99 @@ from fairdivision.utils.bundle import Bundle
 
 
 def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
-    for agent_1 in agents:
-        for agent_2 in agents:
-            if agent_1 != agent_2:
-                valuation_of_1 = valuation_of_bundle(agent_1, allocation.for_agent(agent_1))
-                valuation_of_2 = valuation_of_bundle(agent_1, allocation.for_agent(agent_2))
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+                valuation_of_j = agent_i.get_valuation(allocation.for_agent(agent_j))
 
-                if valuation_of_2 > valuation_of_1:
-                    return (False, (agent_1, agent_2))
+                if valuation_of_j > valuation_of_i:
+                    return (False, (agent_i, agent_j))
                 
     return True
 
 
 def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
-    for agent_1 in agents:
-        for agent_2 in agents:
-            if agent_1 != agent_2:
-                valuation_of_1 = valuation_of_bundle(agent_1, allocation.for_agent(agent_1))
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
-                for item_to_remove in allocation.for_agent(agent_2):
-                    items_subset = allocation.for_agent(agent_2).copy()
+                for item_to_remove in allocation.for_agent(agent_j):
+                    items_subset = allocation.for_agent(agent_j).copy()
                     items_subset.delete_item(item_to_remove)
 
-                    valuation_of_2 = valuation_of_bundle(agent_1, items_subset)
+                    valuation_of_j = agent_i.get_valuation(items_subset)
 
-                    if valuation_of_2 > valuation_of_1:
-                        return (False, (agent_1, agent_2))
+                    if valuation_of_j > valuation_of_i:
+                        return (False, (agent_i, agent_j))
                 
     return True
+
+
+def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
+    alpha = 1
+
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+
+                for item_to_remove in allocation.for_agent(agent_j):
+                    items_subset = allocation.for_agent(agent_j).copy()
+                    items_subset.delete_item(item_to_remove)
+
+                    valuation_of_j = agent_i.get_valuation(items_subset)
+
+                    if valuation_of_j > valuation_of_i:
+                        # assumes non-negative valuations
+                        alpha = min(alpha, valuation_of_i / valuation_of_j)
+                
+    return round(alpha, 3)
 
 
 def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
-    for agent_1 in agents:
-        for agent_2 in agents:
-            if agent_1 != agent_2:
-                valuation_of_1 = valuation_of_bundle(agent_1, allocation.for_agent(agent_1))
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
-                for item_to_remove in allocation.for_agent(agent_2):
-                    items_subset = allocation.for_agent(agent_2).copy()
+                for item_to_remove in allocation.for_agent(agent_j):
+                    items_subset = allocation.for_agent(agent_j).copy()
                     items_subset.delete_item(item_to_remove)
 
-                    valuation_of_2 = valuation_of_bundle(agent_1, items_subset)
+                    valuation_of_j = agent_i.get_valuation(items_subset)
 
-                    if valuation_of_1 >= valuation_of_2:
+                    if valuation_of_i >= valuation_of_j:
                         break
                 else:
-                    return (False, (agent_1, agent_2)) 
+                    return (False, (agent_i, agent_j)) 
                 
     return True
 
 
-def valuation_of_bundle(agent: Agent, bundle: Bundle) -> int:
-    valuation = 0
-    for item in bundle:
-        valuation += agent.get_valuation(item)
+def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
+    alpha = 1
 
-    return valuation
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                agent_i_alpha = 0
+
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+
+                for item_to_remove in allocation.for_agent(agent_j):
+                    items_subset = allocation.for_agent(agent_j).copy()
+                    items_subset.delete_item(item_to_remove)
+
+                    valuation_of_j = agent_i.get_valuation(items_subset)
+
+                    if valuation_of_i >= valuation_of_j:
+                        break
+                    else:
+                        agent_i_alpha = max(agent_i_alpha, valuation_of_i / valuation_of_j)
+                else:
+                    # assumes non-negative valuations
+                    alpha = min(alpha, agent_i_alpha)
+                
+    return round(alpha, 3)

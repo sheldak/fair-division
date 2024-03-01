@@ -6,7 +6,7 @@ from fairdivision.utils.items import Items
 
 
 # Implementation of Algorithm 2 from "Multiple birds with one stone: Beating 1/2 for EFX and GMMS via envy cycle
-# elimination" by G. Amanatidis et al.
+# elimination" by Amanatidis et al.
 def round_robin(
         agents: Agents, 
         allocation: Allocation, 

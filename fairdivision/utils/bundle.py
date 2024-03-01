@@ -28,7 +28,7 @@ class Bundle:
         return self.size() == other.size()
 
     def __repr__(self):
-        items = sorted(list(self.items.get_indices()))
+        items = self.items.get_indices()
         return f"Bundle({items})"
     
     def __str__(self):
@@ -54,6 +54,9 @@ class Bundle:
     
     def assign_agent(self, agent: Agent) -> None:
         self.agent = agent
+
+    def get_agent(self) -> Optional[Agent]:
+        return self.agent
 
     def size(self) -> int:
         return self.items.size()

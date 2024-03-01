@@ -7,13 +7,14 @@ from fairdivision.utils.item import Item
 class Items:
     def __init__(self, items_list: list[Item] = []):
         self.items: dict[int, Item] = {}
+        self.sorted_items: list[Item] = []
         self.initialize_items(items_list)
 
     def __iter__(self) -> Iterator[Item]:
         return self.get_items().__iter__()
     
     def __contains__(self, item):
-        return item in self.get_items()
+        return item.get_index() in self.items
     
     def __repr__(self):
         return f"Items({self.get_items()})"
@@ -26,10 +27,13 @@ class Items:
 
     def initialize_items(self, items_list: list[Item]) -> None:
         for item in items_list:
-            self.add_item(item)
+            self.items[item.get_index()] = item
+
+        self.sorted_items = sorted(items_list, key=lambda item: item.get_index())
 
     def add_item(self, item: Item) -> None:
         self.items[item.get_index()] = item
+        self.sorted_items = sorted(self.sorted_items + [item], key=lambda item: item.get_index())
 
     def get_item(self, index: int) -> Item:
         if index in self.items:
@@ -40,16 +44,18 @@ class Items:
     def delete_item(self, index_or_item: int | Item) -> None:
         if isinstance(index_or_item, int):
             self.items.pop(index_or_item)
+            self.sorted_items = list(filter(lambda item: item.get_index() != index_or_item, self.sorted_items))
         elif isinstance(index_or_item, Item):
             self.items.pop(index_or_item.get_index())
+            self.sorted_items.remove(index_or_item)
         else:
             raise Exception(f"To delete an item from items, index or Item object was expected, got {index_or_item}")
 
     def get_items(self) -> list[Item]:
-        return list(self.items.values())
+        return self.sorted_items
     
     def get_indices(self) -> list[int]:
-        return list(self.items.keys())
+        return list(map(lambda item: item.get_index(), self.sorted_items))
     
     def size(self) -> int:
         return len(self.items)

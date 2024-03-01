@@ -1,3 +1,4 @@
+# Example 2 from "Fair Division of Indivisible Goods: Recent Progress and Open Questions" by Amanatidis et al.
 additive
 3 5
 15 3 2 2 6

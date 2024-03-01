@@ -30,6 +30,15 @@ class Allocation:
     def allocate(self, agent: Agent, item: Item) -> None:
         self.allocation[agent].add_item(item)
 
+    def allocate_bundle(self, agent: Agent, bundle: Bundle) -> None:
+        self.allocation[agent] = bundle
+
+        previous_owner = bundle.get_agent()
+        if previous_owner in self.allocation and self.allocation[previous_owner] == bundle:
+            self.allocation[previous_owner] = Bundle(Items())
+
+        bundle.assign_agent(agent)
+
     def for_agent(self, agent: Agent) -> Bundle:
         if agent in self.allocation:
             return self.allocation[agent]

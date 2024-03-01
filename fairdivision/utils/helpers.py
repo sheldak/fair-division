@@ -15,7 +15,7 @@ def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
 
     table = f"{generate_header(items, row_length, column_length)}\n"
 
-    for agent_index in sorted(agents.get_indices()):
+    for agent_index in agents.get_indices():
         agent = agents.get_agent(agent_index)
         table += f"{generate_row(agent, items, row_length, column_length)}\n"
 
@@ -26,7 +26,7 @@ def generate_header(items: Items, row_length: int, column_length: int) -> str:
     # first line
     header = " " * row_length + " |"
 
-    for item_index in sorted(items.get_indices()):
+    for item_index in items.get_indices():
         item_length = number_length(item_index) + 1
         empty = " " * (column_length - item_length)
 
@@ -49,7 +49,7 @@ def generate_row(agent: Agent, items: Items, row_length: int, column_length: int
 
     row = f"a{agent_index}{empty} |"
 
-    for item_index in sorted(items.get_indices()):
+    for item_index in items.get_indices():
         item = items.get_item(item_index)
         valuation = agent.get_valuation(item)
 

@@ -58,7 +58,7 @@ def parse_valuations(line: str, agent: Agent, items: Items) -> None:
 def split_into_lines(file: TextIOWrapper) -> list[str]:
     stripped_lines = [line.strip() for line in file.read().split("\n")]
 
-    return list(filter(lambda line: len(line) > 0, stripped_lines))
+    return list(filter(lambda line: len(line) > 0 and "#" not in line, stripped_lines))
 
 
 def split_and_strip(line: str) -> list[str]:

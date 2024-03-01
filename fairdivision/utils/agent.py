@@ -4,9 +4,10 @@ from fairdivision.utils.items import Items
 
 
 class Agent:
-    def __init__(self, index: int):
+    def __init__(self, index: int, valuations_additive: bool = True):
         self.index: int = index
         self.valuations: dict[Item | Bundle, int] = {}
+        self.valuations_additive: bool = valuations_additive
 
     def __hash__(self):
         return hash(self.index)
@@ -30,7 +31,13 @@ class Agent:
         return item_or_bundle in self.valuations
 
     def get_valuation(self, item_or_bundle: Item | Bundle) -> int:
-        if isinstance(item_or_bundle, Item) or isinstance(item_or_bundle, Bundle):
+        if isinstance(item_or_bundle, Bundle) and self.valuations_additive:
+            valuation = 0
+            for item in item_or_bundle:
+                valuation += self.valuations[item]
+
+            return valuation
+        elif isinstance(item_or_bundle, Item) or isinstance(item_or_bundle, Bundle):
             if item_or_bundle in self.valuations:
                 return self.valuations[item_or_bundle]
             else:

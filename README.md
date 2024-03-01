@@ -31,5 +31,5 @@ Instances of the discrete fair division problem in `instances` directory follow 
 
 - The first line specifies restrictions on valuations as a space separated strings. Only `additive` is supported now.
 - The second line should contain 2 integers separated by a space. First one is the number of agents (n), and the second one is the number of items (m).
-- The next n lines contain m integers separated by spaces. Each j-th number in (i+2)-th line represents i-th agent's valuation for j-th item.
+- Each of the next n lines contain m integers separated by spaces. Each j-th number in (i+2)-th line represents i-th agent's valuation for j-th item.
 - Lines containing `#` symbol or with only whitespace characters are not considered during the parsing.

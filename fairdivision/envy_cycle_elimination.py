@@ -22,7 +22,7 @@ def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items)
         
         if unenvied_agent is None:
             cycle = nx.find_cycle(graph)
-            allocation = eliminate_cycle(cycle, allocation)
+            allocation = eliminate_cycle(graph, cycle, allocation)
 
         allocation.allocate(agent, item)
 
@@ -35,19 +35,19 @@ def initialize_graph(agents: Agents, allocation: Allocation) -> nx.DiGraph:
     graph = nx.DiGraph()
     graph.add_nodes_from(agents)
     
-    for agent_1 in agents:
-        for agent_2 in agents:
-            if agent_1 != agent_2:
-                valuation_of_1 = agent_1.get_valuation(allocation.for_agent(agent_1))
-                valuation_of_2 = agent_1.get_valuation(allocation.for_agent(agent_2))
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+                valuation_of_j = agent_i.get_valuation(allocation.for_agent(agent_j))
 
-                if valuation_of_2 > valuation_of_1:
-                    graph.add_edge(agent_1, agent_2)
+                if valuation_of_j > valuation_of_i:
+                    graph.add_edge(agent_i, agent_j)
 
     return graph
 
 
-def eliminate_cycle(cycle: list[tuple[Agent, Agent]], allocation: Allocation) -> Allocation:
+def eliminate_cycle(graph: nx.DiGraph, cycle: list[tuple[Agent, Agent]], allocation: Allocation) -> Allocation:
     first_bundle = allocation.for_agent(cycle[0][0])
 
     for envious, envied in cycle[:-1]:
@@ -55,13 +55,15 @@ def eliminate_cycle(cycle: list[tuple[Agent, Agent]], allocation: Allocation) ->
 
     allocation.allocate_bundle(cycle[-1][0], first_bundle)
 
+    graph.remove_edges_from(cycle)
+
     return allocation
 
 
 def update_graph(graph: nx.DiGraph, agents: Agents, allocation: Allocation, agent_with_new_item: Agent) -> None:
     for agent in agents:
-        valuation_of_agent = agent.get_valuation(allocation.for_agent(agent))
+        valuation_of_allocated_bundle = agent.get_valuation(allocation.for_agent(agent))
         valuation_of_new_bundle = agent.get_valuation(allocation.for_agent(agent_with_new_item))
 
-        if valuation_of_new_bundle > valuation_of_agent:
+        if valuation_of_new_bundle > valuation_of_allocated_bundle:
             graph.add_edge(agent, agent_with_new_item)

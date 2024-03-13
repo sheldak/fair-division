@@ -8,34 +8,44 @@ from fairdivision.utils.items import Items
 
 
 class ValuationsGenerator:
+    def valuate(self, agent, item_or_bundle):
+        raise Exception(f"Valuation function not implemented")
+
+
+class AdditiveGenerator(ValuationsGenerator):
+    """
+    A class for generating additive valuations.
+
+    Valuations are integers taken uniformly at random from interval [`min`, `max`], where `min` and `max` are optional
+    parameters given during the instantiation of the class.
+    """
+
     def __init__(self, additive: bool = True, min: int = 0, max: int = 100):
         self.additive: bool = additive
         self.min: int = min
         self.max: int = max
 
     def valuate(self, agent: Agent, item_or_bundle: Item | Bundle) -> int:
-        if self.additive:
-            return self.valuate_additively(agent, item_or_bundle)
-        else:
-            if agent.has_valuation(item_or_bundle):
-                return agent.get_valuation(item_or_bundle)
-            else:
-                return random.randint(self.min, self.max)
-    
-    def valuate_additively(self, agent: Agent, item_or_bundle: Item | Bundle) -> int:
+        """
+        Returns valuation of `item_or_bundle` for `agent`.
+
+        If `agent` already has a valuation for `item_or_bundle`, it is returned. Otherwise, the valuation is generated
+        uniformly at random.
+        """
+
         if isinstance(item_or_bundle, Item):
-            return self.valuate_item(agent, item_or_bundle)
+            return self.__valuate_item(agent, item_or_bundle)
         elif isinstance(item_or_bundle, Bundle):
             valuation = 0
 
             for item in item_or_bundle.items:
-                valuation += self.valuate_item(agent, item)
+                valuation += self.__valuate_item(agent, item)
 
             return valuation
         else:
             raise Exception(f"Can only valuate item or bundle, got {item_or_bundle}")
 
-    def valuate_item(self, agent: Agent, item: Item) -> int:
+    def __valuate_item(self, agent: Agent, item: Item) -> int:
         if agent.has_valuation(item):
             return agent.get_valuation(item)
         else:
@@ -43,6 +53,12 @@ class ValuationsGenerator:
 
 
 def generate_agents(n: int) -> Agents:
+    """
+    Generates `n` agents and put them into `Agents` object.
+
+    Indices of agents are from `1` to `n` inclusive.
+    """
+
     agents = []
 
     for i in range(1, n+1):
@@ -52,6 +68,12 @@ def generate_agents(n: int) -> Agents:
 
 
 def generate_items(m: int) -> Items:
+    """
+    Generates `m` items and put them into `Items` object.
+
+    Indices of items are from `1` to `m` inclusive.
+    """
+
     items = []
 
     for i in range(1, m+1):
@@ -61,6 +83,10 @@ def generate_items(m: int) -> Items:
 
 
 def generate_valuations(agents: Agents, items: Items, generator: ValuationsGenerator) -> None:
+    """
+    Generates and assigns valuations of `items` for `agents` using provided `generator`.
+    """
+
     for agent in agents:
         for item in items:
             valuation = generator.valuate(agent, item)

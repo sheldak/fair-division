@@ -4,6 +4,12 @@ from fairdivision.utils.items import Items
 
 
 class Agent:
+    """
+    A class representating an agent.
+
+    Contains information about agent's valuations of items.
+    """
+
     def __init__(self, index: int, valuations_additive: bool = True):
         self.index: int = index
         self.valuations: dict[Item | Bundle, int] = {}

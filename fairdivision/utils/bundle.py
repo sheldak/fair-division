@@ -9,6 +9,13 @@ from fairdivision.utils.items import Items
 
 
 class Bundle:
+    """
+    A class representating a bundle of Items.
+
+    It is an object that should be allocated to Agents. Contains Items and the Agent to which
+    it is allocated.
+    """
+     
     def __init__(self, items: Items):
         self.items: Items = items
         self.agent: Optional[Agent] = None

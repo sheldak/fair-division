@@ -3,13 +3,19 @@ from io import TextIOWrapper
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
-from fairdivision.utils.generator import generate_agents, generate_items
+from fairdivision.utils.generators import generate_agents, generate_items
 from fairdivision.utils.items import Items
 
 
 RESTRICTIONS = ["additive"]
 
 def import_from_file(file_path: str) -> tuple[Agents, Items, list[str]]:
+    """
+    Imports Agents, Items and a list of valuation restrictions from file in `file_path`.
+
+    The file should follow the standard of fair division instance described in the README.md file.
+    """
+
     with open(file_path, "r") as file:
         lines = split_into_lines(file)
 
@@ -29,6 +35,36 @@ def import_from_file(file_path: str) -> tuple[Agents, Items, list[str]]:
         
         return agents, items, restrictions
 
+
+def import_allocation_from_dict(agents: Agents, items: Items, allocation_dict: dict[int, list[int]]) -> Allocation:
+    """
+    Creates an Allocation out of `allocation_dict`.
+
+    `allocation_dict` should have `agents` indices as keys and lists of `items` indices as values. List of `items`
+    indices represents a bundle that should be assigned to a particular agent.
+
+    For example:
+        ```
+        {
+            1: [2, 3],
+            2: [4],
+            3: [1]
+        }
+        ```
+    """
+
+    allocation = Allocation(agents)
+    
+    for agent_index, bundle_list in allocation_dict.items():
+        agent = agents.get_agent(agent_index)
+
+        for item_index in bundle_list:
+            allocation.allocate(agent, items.get_item(item_index))
+
+    return allocation
+
+
+# -- PRIVATE FUNCTIONS --
 
 def parse_restrictions(line: str) -> list[str]:
     restrictions = list(filter(lambda restriction: restriction in RESTRICTIONS, split_and_strip(line)))
@@ -63,15 +99,3 @@ def split_into_lines(file: TextIOWrapper) -> list[str]:
 
 def split_and_strip(line: str) -> list[str]:
     return [word.strip() for word in line.split(" ")]
-
-
-def import_allocation_from_dict(agents: Agents, items: Items, allocation_dict: dict[int, list[int]]) -> Allocation:
-    allocation = Allocation(agents)
-    
-    for agent_index, bundle_list in allocation_dict.items():
-        agent = agents.get_agent(agent_index)
-
-        for item_index in bundle_list:
-            allocation.allocate(agent, items.get_item(item_index))
-
-    return allocation

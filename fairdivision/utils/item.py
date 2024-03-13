@@ -1,4 +1,8 @@
 class Item:
+    """
+    A class representating an item.
+    """
+
     def __init__(self, index: int):
         self.index: int = index
 

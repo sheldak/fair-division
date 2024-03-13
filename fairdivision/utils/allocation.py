@@ -8,9 +8,15 @@ from fairdivision.utils.items import Items
 
 
 class Allocation:
+    """
+    A class representating an allocation of Items in Bundles to Agents.
+
+    Contains the allocation and manages all changes to it.
+    """
+
     def __init__(self, agents: Agents):
         self.allocation: dict[Agent, Bundle] = {}
-        self.initialize_allocation(agents)
+        self.__initialize_allocation(agents)
 
     def __iter__(self) -> Iterator[tuple[Agent, Bundle]]:
         return self.get_allocation().__iter__()
@@ -21,7 +27,7 @@ class Allocation:
     def __str__(self):
         return repr(self)
 
-    def initialize_allocation(self, agents: Agents) -> None:
+    def __initialize_allocation(self, agents: Agents) -> None:
         for agent in agents:
             bundle = Bundle(Items())
             bundle.assign_agent(agent)

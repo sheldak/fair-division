@@ -13,6 +13,13 @@ def round_robin(
         items: Items, 
         ordering: list[int], 
         steps: int | Literal["inf"] = "inf") -> tuple[Allocation, Items]:
+    """
+    Returns an allocation for the given `agents`, `items` and partial `allocation`.
+
+    Gives favourite unallocated item to each agent in the order specified by `ordering`. Terminates if either there are
+    no more items to distribute, or `steps` items have been assigned by the algorithm.
+    """
+    
     step = 0
     while items.size() > 0 and (steps == "inf" or step < steps):
         agent = agents.get_agent(ordering[step % agents.size()])

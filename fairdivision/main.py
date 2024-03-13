@@ -4,7 +4,7 @@ from fairdivision.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.round_robin import round_robin
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import *
-from fairdivision.utils.generator import *
+from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations
 from fairdivision.utils.importer import import_from_file
 
@@ -22,7 +22,7 @@ m = 5
 agents = generate_agents(n)
 items = generate_items(m)
 
-generator = ValuationsGenerator()
+generator = AdditiveGenerator()
 
 generate_valuations(agents, items, generator)
 

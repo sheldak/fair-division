@@ -5,11 +5,33 @@ from fairdivision.utils.items import Items
 
 
 def print_allocation(allocation: Allocation) -> None:
+    """
+    Pretty prints `allocation`.
+
+    For example:
+
+        Agent(1): Bundle([1, 2])
+        Agent(2): Bundle([3, 4])
+        Agent(3): Bundle([5])
+    """
+
     for agent, bundle in allocation:
         print(f"{agent}: {bundle}")
 
 
 def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
+    """
+    Prints valuations of single items for all agents in a table.
+
+    For example:
+        ```
+           | g1  | g2  | g3  | g4  |
+        ---|-----|-----|-----|-----|
+        a1 | 10  | 20  | 30  | 40  |
+        a2 | 50  | 60  | 70  | 100 |
+        ```
+    """
+
     row_length = number_length(agents.size()) + 1
     column_length = number_length(max(max_value, items.size() * 10))
 
@@ -21,6 +43,8 @@ def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
 
     print(table)
     
+
+# -- PRIVATE FUNCTIONS --
 
 def generate_header(items: Items, row_length: int, column_length: int) -> str:
     # first line

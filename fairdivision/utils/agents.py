@@ -4,10 +4,18 @@ from fairdivision.utils.agent import Agent
 
 
 class Agents:
+    """
+    A class representating a collection of agents.
+
+    Contains agents in two structures:
+      - a dictionary that has agent's index as a key, and the corresponding agent as value
+      - a list of agents sorted in an ascending order of their indices
+    """
+
     def __init__(self, agents_list: list[Agent]):
         self.agents: dict[int, Agent] = {}
         self.sorted_agents: list[Agent] = []
-        self.initialize_agents(agents_list)
+        self.__initialize_agents(agents_list)
 
     def __iter__(self) -> Iterator[Agent]:
         return self.get_agents().__iter__()
@@ -15,7 +23,7 @@ class Agents:
     def __contains__(self, agent):
         return agent.get_index() in self.agents
 
-    def initialize_agents(self, agents_list: list[Agent]) -> None:
+    def __initialize_agents(self, agents_list: list[Agent]) -> None:
         for agent in agents_list:
             self.agents[agent.get_index()] = agent
 

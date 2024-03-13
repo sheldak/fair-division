@@ -3,10 +3,15 @@ from typing import Literal
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
-from fairdivision.utils.bundle import Bundle
 
 
 def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+    """
+    Checks if the given `allocation` to `agents` is envy-free.
+
+    Returns `True` if it is EF or tuple `(False, (evious_agent, envied_agent))` otherwise.
+    """
+     
     for agent_i in agents:
         for agent_j in agents:
             if agent_i != agent_j:
@@ -20,6 +25,12 @@ def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Liter
 
 
 def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+    """
+    Checks if the given `allocation` to `agents` is envy-free up to any good.
+
+    Returns `True` if it is EFX or tuple `(False, (evious_agent, envied_agent))` otherwise.
+    """
+
     for agent_i in agents:
         for agent_j in agents:
             if agent_i != agent_j:
@@ -38,6 +49,12 @@ def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
 
 
 def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
+    """
+    Checks what is the highest `a` such that `allocation` is a-EFX.  
+
+    The result is rounded to 3 decimal places. If `allocation` is EFX, returns `1`.
+    """
+
     alpha = 1
 
     for agent_i in agents:
@@ -59,6 +76,12 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
 
 
 def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+    """
+    Checks if the given `allocation` to `agents` is envy-free up to one good.
+
+    Returns `True` if it is EF1 or tuple `(False, (evious_agent, envied_agent))` otherwise.
+    """
+
     for agent_i in agents:
         for agent_j in agents:
             if agent_i != agent_j:
@@ -79,6 +102,12 @@ def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
 
 
 def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
+    """
+    Checks what is the highest `a` such that `allocation` is a-EF1.  
+
+    The result is rounded to 3 decimal places. If `allocation` is EF1, returns `1`.
+    """
+
     alpha = 1
 
     for agent_i in agents:

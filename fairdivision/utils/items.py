@@ -5,10 +5,18 @@ from fairdivision.utils.item import Item
 
 
 class Items:
+    """
+    A class representating a collection of items.
+
+    Contains items in two structures:
+      - a dictionary that has item's index as a key, and the corresponding item as value
+      - a list of items sorted in an ascending order of their indices
+    """
+
     def __init__(self, items_list: list[Item] = []):
         self.items: dict[int, Item] = {}
         self.sorted_items: list[Item] = []
-        self.initialize_items(items_list)
+        self.__initialize_items(items_list)
 
     def __iter__(self) -> Iterator[Item]:
         return self.get_items().__iter__()
@@ -25,7 +33,7 @@ class Items:
     def copy(self) -> Items:
         return Items(self.get_items().copy())
 
-    def initialize_items(self, items_list: list[Item]) -> None:
+    def __initialize_items(self, items_list: list[Item]) -> None:
         for item in items_list:
             self.items[item.get_index()] = item
 

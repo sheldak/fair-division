@@ -3,7 +3,7 @@ import os
 from fairdivision.round_robin import round_robin
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import is_ef1
-from fairdivision.utils.importer import import_from_file
+from fairdivision.utils.importers import import_from_file
 
 
 # Round Robin returns an EF1 allocation for every additive instance.

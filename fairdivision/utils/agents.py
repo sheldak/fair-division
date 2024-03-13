@@ -22,6 +22,12 @@ class Agents:
     
     def __contains__(self, agent):
         return agent.get_index() in self.agents
+    
+    def __repr__(self):
+        return f"Agents({self.get_agents()})"
+    
+    def __str__(self):
+        return repr(self)
 
     def __initialize_agents(self, agents_list: list[Agent]) -> None:
         for agent in agents_list:

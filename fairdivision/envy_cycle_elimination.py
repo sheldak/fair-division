@@ -1,4 +1,5 @@
 import networkx as nx
+from typing import Optional
 
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
@@ -17,23 +18,17 @@ def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items)
     graph = initialize_graph(agents, allocation)
 
     for item in items:
-        unenvied_agent = None
-        for agent in agents:
-            if graph.in_degree(agent) == 0:
-                # prefering agents with empty bundles to get 1/2-EFX allocation
-                if allocation.for_agent(agent).size() == 0:
-                    unenvied_agent = agent
-                    break
-                elif unenvied_agent is None:
-                    unenvied_agent = agent
+        unenvied_agent = get_unenvied_agent(graph, agents, allocation)
         
-        if unenvied_agent is None:
+        while unenvied_agent is None:
             cycle = nx.find_cycle(graph)
             allocation = eliminate_cycle(graph, cycle, allocation)
 
-        allocation.allocate(agent, item)
+            unenvied_agent = get_unenvied_agent(graph, agents, allocation)
+        
+        allocation.allocate(unenvied_agent, item)
 
-        update_graph(graph, agents, allocation, agent)
+        update_graph(graph, agents, allocation, unenvied_agent)
 
     return allocation
 
@@ -60,6 +55,26 @@ def initialize_graph(agents: Agents, allocation: Allocation) -> nx.DiGraph:
     return graph
 
 
+def get_unenvied_agent(graph: nx.DiGraph, agents: Agents, allocation: Allocation) -> Optional[Agent]:
+    """
+    Returns unenvied agent if such exists.
+
+    Ties are broken in favor of the agents with empty bundles to ensure 1/2-EFX allocation.
+    """
+
+    unenvied_agent = None
+
+    for agent in agents:
+        if graph.in_degree(agent) == 0:
+            if allocation.for_agent(agent).size() == 0:
+                unenvied_agent = agent
+                break
+            elif unenvied_agent is None:
+                unenvied_agent = agent
+
+    return unenvied_agent
+
+
 def eliminate_cycle(graph: nx.DiGraph, cycle: list[tuple[Agent, Agent]], allocation: Allocation) -> Allocation:
     """
     Eliminates an envy cycle in envy `graph` by redistributing bundles of the agents in `cycle`.
@@ -77,14 +92,23 @@ def eliminate_cycle(graph: nx.DiGraph, cycle: list[tuple[Agent, Agent]], allocat
     return allocation
 
 
-def update_graph(graph: nx.DiGraph, agents: Agents, allocation: Allocation, agent_with_new_item: Agent) -> None:
+def update_graph(graph: nx.DiGraph, agents: Agents, allocation: Allocation, endowed_agent: Agent) -> None:
     """
-    Updates the envy `graph` after a new item was allocated to `agent_with_new_item`.
+    Updates the envy `graph` after a new item was allocated to `endowed_agent`.
     """
 
+    # deleting neighbours that the endowed agent no longer envies
+    for previously_envied in graph[endowed_agent].copy():
+        valuation_of_allocated_bundle = endowed_agent.get_valuation(allocation.for_agent(endowed_agent))
+        valuation_of_other_bundle = endowed_agent.get_valuation(allocation.for_agent(previously_envied))
+
+        if valuation_of_allocated_bundle >= valuation_of_other_bundle:
+            graph.remove_edge(endowed_agent, previously_envied)
+
+    # adding envy towards the endowed agent
     for agent in agents:
         valuation_of_allocated_bundle = agent.get_valuation(allocation.for_agent(agent))
-        valuation_of_new_bundle = agent.get_valuation(allocation.for_agent(agent_with_new_item))
+        valuation_of_new_bundle = agent.get_valuation(allocation.for_agent(endowed_agent))
 
         if valuation_of_new_bundle > valuation_of_allocated_bundle:
-            graph.add_edge(agent, agent_with_new_item)
+            graph.add_edge(agent, endowed_agent)

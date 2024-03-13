@@ -18,6 +18,9 @@ class Allocation:
         self.allocation: dict[Agent, Bundle] = {}
         self.__initialize_allocation(agents)
 
+    def __eq__(self, other):
+        return self.get_allocation() == other.get_allocation()
+
     def __iter__(self) -> Iterator[tuple[Agent, Bundle]]:
         return self.get_allocation().__iter__()
     

@@ -28,11 +28,7 @@ class Bundle:
         return hash(curr_hash)
 
     def __eq__(self, other):
-        for item in self:
-            if item not in other:
-                return False
-            
-        return self.size() == other.size()
+        return self.get_items() == other.get_items() and self.get_agent() == other.get_agent()
 
     def __repr__(self):
         items = self.items.get_indices()

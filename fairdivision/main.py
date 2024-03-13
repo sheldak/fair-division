@@ -6,7 +6,9 @@ from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import *
 from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations
-from fairdivision.utils.importer import import_from_file
+from fairdivision.utils.importers import import_from_file
+
+from fairdivision.all_allocations import all_allocations
 
 
 # seed = 41569

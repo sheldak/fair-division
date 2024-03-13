@@ -1,5 +1,5 @@
 from fairdivision.utils.checkers import is_ef1, highest_ef1_approximation
-from fairdivision.utils.importer import import_from_file, import_allocation_from_dict
+from fairdivision.utils.importers import import_from_file, import_allocation_from_dict
 
 
 EF1_ALLOCATION = {

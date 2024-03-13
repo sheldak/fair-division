@@ -1,5 +1,5 @@
 from fairdivision.utils.checkers import is_efx, highest_efx_approximation
-from fairdivision.utils.importer import import_from_file, import_allocation_from_dict
+from fairdivision.utils.importers import import_from_file, import_allocation_from_dict
 
 
 EFX_ALLOCATION = {

@@ -3,7 +3,7 @@ import os
 from fairdivision.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import is_ef1, is_efx, highest_efx_approximation
-from fairdivision.utils.importer import import_from_file
+from fairdivision.utils.importers import import_from_file
 
 
 # Envy Cycle Elimination returns an EF1 allocation for every additive instance.

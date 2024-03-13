@@ -18,6 +18,9 @@ class Items:
         self.sorted_items: list[Item] = []
         self.__initialize_items(items_list)
 
+    def __eq__(self, other):
+        return self.get_items() == other.get_items()
+
     def __iter__(self) -> Iterator[Item]:
         return self.get_items().__iter__()
     

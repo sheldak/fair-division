@@ -1,3 +1,9 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from fairdivision.utils.allocation import Allocation
+
 from fairdivision.utils.bundle import Bundle
 from fairdivision.utils.item import Item
 from fairdivision.utils.items import Items
@@ -62,3 +68,9 @@ class Agent:
             return favorite_item
         else:
             raise Exception("Cannot return a favourite item if there are no items")
+
+    def envies(self, other: Agent, allocation: Allocation) -> bool:
+        self_valuation = self.get_valuation(allocation.for_agent(self))
+        other_valuation = self.get_valuation(allocation.for_agent(other))
+
+        return other_valuation > self_valuation

@@ -91,4 +91,3 @@ def generate_valuations(agents: Agents, items: Items, generator: ValuationsGener
         for item in items:
             valuation = generator.valuate(agent, item)
             agent.assign_valuation(item, valuation)
-    

@@ -15,10 +15,7 @@ def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Liter
     for agent_i in agents:
         for agent_j in agents:
             if agent_i != agent_j:
-                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
-                valuation_of_j = agent_i.get_valuation(allocation.for_agent(agent_j))
-
-                if valuation_of_j > valuation_of_i:
+                if agent_i.envies(agent_j, allocation):
                     return (False, (agent_i, agent_j))
                 
     return True

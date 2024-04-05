@@ -1,7 +1,19 @@
+from fairdivision.all_allocations import all_allocations
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.items import Items
+
+
+def get_maximin_shares(agents: Agents, items: Items) -> dict[Agent, int]:
+    maximin_shares = dict([(agent, 0) for agent in agents])
+
+    for possible_allocation in all_allocations(agents, items):
+        for agent in agents:
+            worst_valuation = min([agent.get_valuation(bundle) for _, bundle in possible_allocation.get_allocation()])
+            maximin_shares[agent] = max(maximin_shares[agent], worst_valuation)
+
+    return maximin_shares
 
 
 def print_allocation(allocation: Allocation) -> None:

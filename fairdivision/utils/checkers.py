@@ -3,6 +3,8 @@ from typing import Literal
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
+from fairdivision.utils.helpers import get_maximin_shares
+from fairdivision.utils.items import Items
 
 
 def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
@@ -128,4 +130,41 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
                     # assumes non-negative valuations
                     alpha = min(alpha, agent_i_alpha)
                 
+    return round(alpha, 3)
+
+
+def is_mms(agents: Agents, items: Items, allocation: Allocation) -> Literal[True] | tuple[Literal[False], Agent]:
+    """
+    Checks if the given `allocation` of `items` to `agents` is maximin share fair.
+
+    Returns `True` if it is MMS or tuple `(False, not_satisfied_agent)` otherwise.
+    """
+
+    maximin_shares = get_maximin_shares(agents, items)
+
+    for agent, _ in allocation.get_allocation():
+        if agent.get_valuation(allocation.for_agent(agent)) < maximin_shares[agent]:
+            return (False, agent)
+    
+    return True
+
+
+def highest_mms_approximation(agents: Agents, items: Items, allocation: Allocation) -> float:
+    """
+    Checks what is the highest `a` such that `allocation` is a-MMS.  
+
+    The result is rounded to 3 decimal places. If `allocation` is MMS, returns `1`.
+    """
+
+    maximin_shares = get_maximin_shares(agents, items)
+
+    alpha = 1
+
+    for agent, _ in allocation.get_allocation():
+        valuation = agent.get_valuation(allocation.for_agent(agent))
+
+        if valuation < maximin_shares[agent]:
+            # assumes non-negative valuations
+            alpha = min(alpha, valuation / maximin_shares[agent])
+
     return round(alpha, 3)

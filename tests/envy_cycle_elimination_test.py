@@ -2,7 +2,7 @@ import os
 
 from fairdivision.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.utils.allocation import Allocation
-from fairdivision.utils.checkers import is_ef1, is_efx, highest_efx_approximation
+from fairdivision.utils.checkers import is_ef1, is_efx, highest_efx_approximation, highest_mms_approximation
 from fairdivision.utils.importers import import_from_file
 
 
@@ -30,6 +30,18 @@ def test_envy_cycle_elimination_efx_approximation():
             allocation = envy_cycle_elimination(agents, allocation, items)
 
             assert highest_efx_approximation(agents, allocation) >= 1/2
+
+# Envy Cycle Elimination returns an 1/2-MMS allocation for every additive instance.
+# Proven in "Fair Division of Indivisible Goods: Recent Progress and Open Questions" by Amanatidis et al.
+def test_envy_cycle_elimination_mms_approximation():
+    for file_name in os.listdir("instances"):
+        agents, items, restrictions = import_from_file(f"instances/{file_name}")
+        if "additive" in restrictions:
+            allocation = Allocation(agents)
+
+            allocation = envy_cycle_elimination(agents, allocation, items)
+
+            assert highest_mms_approximation(agents, items, allocation) >= 1/2
 
 
 # Envy Cycle Elimination returns an EFX allocation for an ordered additive instance.

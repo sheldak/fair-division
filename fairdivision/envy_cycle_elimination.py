@@ -4,7 +4,6 @@ from typing import Optional
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
-from fairdivision.utils.helpers import print_allocation, print_envy_graph
 from fairdivision.utils.items import Items
 
 

@@ -9,8 +9,8 @@ from fairdivision.utils.helpers import print_allocation, print_valuations
 
 worst_efx = 1
 
-for i in range(50000):
-    n = 2
+for i in range(30000):
+    n = 3
     m = 4
 
     agents = generate_agents(n)

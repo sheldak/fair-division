@@ -67,7 +67,7 @@ def generate_agents(n: int) -> Agents:
     return Agents(agents)
 
 
-def generate_items(m: int) -> Items:
+def generate_items(m: int, start_index: int = 1) -> Items:
     """
     Generates `m` items and put them into `Items` object.
 
@@ -76,7 +76,7 @@ def generate_items(m: int) -> Items:
 
     items = []
 
-    for i in range(1, m+1):
+    for i in range(start_index, start_index + m):
         items.append(Item(i))
 
     return Items(items)

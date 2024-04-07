@@ -22,12 +22,11 @@ def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Liter
                 
     return True
 
-
-def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+def is_efx0(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
     """
     Checks if the given `allocation` to `agents` is envy-free up to any good.
 
-    Returns `True` if it is EFX or tuple `(False, (evious_agent, envied_agent))` otherwise.
+    Returns `True` if it is EFX0 or tuple `(False, (evious_agent, envied_agent))` otherwise.
     """
 
     for agent_i in agents:
@@ -47,11 +46,11 @@ def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
     return True
 
 
-def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
+def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
     """
-    Checks what is the highest `a` such that `allocation` is a-EFX.  
+    Checks what is the highest `a` such that `allocation` is a-EFX0.  
 
-    The result is rounded to 3 decimal places. If `allocation` is EFX, returns `1`.
+    The result is rounded to 3 decimal places. If `allocation` is EFX0, returns `1`.
     """
 
     alpha = 1
@@ -70,6 +69,59 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
                     if valuation_of_j > valuation_of_i:
                         # assumes non-negative valuations
                         alpha = min(alpha, valuation_of_i / valuation_of_j)
+                
+    return round(alpha, 3)
+
+
+def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+    """
+    Checks if the given `allocation` to `agents` is envy-free up to any positively valued good.
+
+    Returns `True` if it is EFX or tuple `(False, (evious_agent, envied_agent))` otherwise.
+    """
+
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+
+                for item_to_remove in allocation.for_agent(agent_j):
+                    if agent_i.get_valuation(item_to_remove) > 0:
+                        items_subset = allocation.for_agent(agent_j).copy()
+                        items_subset.delete_item(item_to_remove)
+
+                        valuation_of_j = agent_i.get_valuation(items_subset)
+
+                        if valuation_of_j > valuation_of_i:
+                            return (False, (agent_i, agent_j))
+                
+    return True
+
+
+def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
+    """
+    Checks what is the highest `a` such that `allocation` is a-EFX.  
+
+    The result is rounded to 3 decimal places. If `allocation` is EFX, returns `1`.
+    """
+
+    alpha = 1
+
+    for agent_i in agents:
+        for agent_j in agents:
+            if agent_i != agent_j:
+                valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
+
+                for item_to_remove in allocation.for_agent(agent_j):
+                    if agent_i.get_valuation(item_to_remove) > 0:
+                        items_subset = allocation.for_agent(agent_j).copy()
+                        items_subset.delete_item(item_to_remove)
+
+                        valuation_of_j = agent_i.get_valuation(items_subset)
+
+                        if valuation_of_j > valuation_of_i:
+                            # assumes non-negative valuations
+                            alpha = min(alpha, valuation_of_i / valuation_of_j)
                 
     return round(alpha, 3)
 

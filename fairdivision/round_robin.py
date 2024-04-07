@@ -19,16 +19,18 @@ def round_robin(
     Gives favourite unallocated item to each agent in the order specified by `ordering`. Terminates if either there are
     no more items to distribute, or `steps` items have been assigned by the algorithm.
     """
+
+    items_left = items.copy()
     
     step = 0
-    while items.size() > 0 and (steps == "inf" or step < steps):
+    while items_left.size() > 0 and (steps == "inf" or step < steps):
         agent = agents.get_agent(ordering[step % agents.size()])
-        favorite_item = agent.get_favorite_item(items)
+        favorite_item = agent.get_favorite_item(items_left)
         
         allocation.allocate(agent, favorite_item)
 
-        items.delete_item(favorite_item)
+        items_left.delete_item(favorite_item)
 
         step += 1
 
-    return (allocation, items)
+    return (allocation, items_left)

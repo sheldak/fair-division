@@ -1,3 +1,5 @@
+import networkx as nx
+
 from fairdivision.all_allocations import all_allocations
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
@@ -6,6 +8,13 @@ from fairdivision.utils.items import Items
 
 
 def get_maximin_shares(agents: Agents, items: Items) -> dict[Agent, int]:
+    """
+    Returns a dictionary mapping each agent to her maximin share value.
+
+    The maximin share of an agent is the highest valuation that the agent can receive from her allocated bundle if she
+    were to split all items into a number of bundles equal to the number of agents and receive the worst bundle.
+    """
+
     maximin_shares = dict([(agent, 0) for agent in agents])
 
     for possible_allocation in all_allocations(agents, items):
@@ -16,22 +25,47 @@ def get_maximin_shares(agents: Agents, items: Items) -> dict[Agent, int]:
     return maximin_shares
 
 
+def print_envy_graph(graph: nx.DiGraph) -> None:
+    """
+    Pretty prints adjacency list of `graph` .
+
+    For example:
+
+        GRAPH
+        Agent(1): [Agent(2), Agent(3)]
+        Agent(2): [Agent(3)]
+        Agent(3): []
+
+    """
+
+    print("GRAPH")
+    for envious, envied in graph.adj.items():
+        print(f"{envious}: {[agent for agent, _attr in envied.items()]}")
+
+    print()
+
+
 def print_allocation(allocation: Allocation) -> None:
     """
     Pretty prints `allocation`.
 
     For example:
 
+        ALLOCATION
         Agent(1): Bundle([1, 2])
         Agent(2): Bundle([3, 4])
         Agent(3): Bundle([5])
+
     """
 
+    print("ALLOCATION")
     for agent, bundle in allocation:
         print(f"{agent}: {bundle}")
 
+    print()
 
-def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
+
+def print_valuations(agents: Agents, items: Items) -> None:
     """
     Prints valuations of single items for all agents in a table.
 
@@ -43,6 +77,11 @@ def print_valuations(agents: Agents, items: Items, max_value: int) -> None:
         a2 | 50  | 60  | 70  | 100 |
         ```
     """
+
+    max_value = 0
+    for agent in agents:
+        for item in items:
+            max_value = max(max_value, agent.get_valuation(item))
 
     row_length = number_length(agents.size()) + 1
     column_length = number_length(max(max_value, items.size() * 10))

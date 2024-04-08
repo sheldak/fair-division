@@ -1,3 +1,4 @@
+# The example with no MMS allocation from "A tight negative example for MMS fair allocations" by Feige et al.
 additive
 3 9
 1 16 23 26 4 10 12 19 9

@@ -1,5 +1,7 @@
 from typing import Literal
 
+from fairdivision.algorithms.all_allocations import all_allocations
+
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
@@ -220,3 +222,50 @@ def highest_mms_approximation(agents: Agents, items: Items, allocation: Allocati
             alpha = min(alpha, valuation / maximin_shares[agent])
 
     return round(alpha, 3)
+
+
+def is_eefx(agents: Agents, items: Items, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+    """
+    Checks if the given `allocation` of `items` to `agents` is epistemic envy-free up to any positively valued good.
+
+    Returns `True` if it is EEFX or tuple `(False, not_satisfied_agent)` otherwise.
+    """
+
+    # check if EFX certificate can be found for each agent
+    for agent in agents:
+        other_agents = agents.copy()
+        other_agents.delete_agent(agent)
+        
+        other_items = items.copy()
+        for item in allocation.for_agent(agent):
+            other_items.delete_item(item)
+
+        self_valuation = agent.get_valuation(allocation.for_agent(agent))
+
+        # iterating over all allocations of the rest of the items
+        for possible_efx_certificate in all_allocations(other_agents, other_items):
+            is_efx_satisfying = True
+
+            # checking if `agent` is EFX satisfied with `possible_efx_certificate`
+            for other_agent in other_agents:
+                for item_to_remove in possible_efx_certificate.for_agent(other_agent):
+                    if agent.get_valuation(item_to_remove) > 0:
+                        items_subset = possible_efx_certificate.for_agent(other_agent).copy()
+                        items_subset.delete_item(item_to_remove)
+
+                        other_valuation = agent.get_valuation(items_subset)
+
+                        if other_valuation > self_valuation:
+                            is_efx_satisfying = False
+                            break
+            
+                if not is_efx_satisfying:
+                    break
+        
+            if is_efx_satisfying:
+                break
+        # no break occurred, so no certificate found
+        else:
+            return (False, agent)
+        
+    return True

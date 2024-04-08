@@ -3,7 +3,6 @@ from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.generators import generate_items
-from fairdivision.utils.helpers import print_allocation, print_valuations
 from fairdivision.utils.items import Items
 
 
@@ -36,9 +35,6 @@ def ordered_picking(agents: Agents, items: Items) -> Allocation:
     assign_valuations_in_order(agents, items, ordered_items)
 
     allocation_for_ordered = envy_cycle_elimination(agents, Allocation(agents), ordered_items)
-
-    print_valuations(agents, ordered_items)
-    print_allocation(allocation_for_ordered)
 
     picking_sequence = get_picking_sequence(ordered_items, allocation_for_ordered)
 

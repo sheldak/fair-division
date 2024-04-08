@@ -1,6 +1,6 @@
 import os
 
-from fairdivision.envy_cycle_elimination import envy_cycle_elimination
+from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import is_ef1, is_efx, highest_efx_approximation, highest_mms_approximation
 from fairdivision.utils.importers import import_from_file

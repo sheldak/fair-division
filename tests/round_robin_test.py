@@ -1,6 +1,6 @@
 import os
 
-from fairdivision.round_robin import round_robin
+from fairdivision.algorithms.round_robin import round_robin
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import is_ef1, highest_mms_approximation
 from fairdivision.utils.helpers import get_maximin_shares

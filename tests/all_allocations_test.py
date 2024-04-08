@@ -1,4 +1,4 @@
-from fairdivision.all_allocations import all_allocations
+from fairdivision.algorithms.all_allocations import all_allocations
 from fairdivision.utils.generators import generate_agents, generate_items
 from fairdivision.utils.importers import import_allocation_from_dict
 

@@ -1,4 +1,4 @@
-from fairdivision.envy_cycle_elimination import envy_cycle_elimination
+from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation

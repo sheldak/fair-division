@@ -1,6 +1,6 @@
 import networkx as nx
 
-from fairdivision.all_allocations import all_allocations
+from fairdivision.algorithms.all_allocations import all_allocations
 from fairdivision.utils.agent import Agent
 from fairdivision.utils.agents import Agents
 from fairdivision.utils.allocation import Allocation

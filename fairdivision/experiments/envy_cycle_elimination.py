@@ -1,6 +1,6 @@
 import random
 
-from fairdivision.envy_cycle_elimination import envy_cycle_elimination
+from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.checkers import *
 from fairdivision.utils.generators import *

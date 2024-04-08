@@ -1,14 +1,13 @@
 import random
 
-from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
-from fairdivision.utils.allocation import Allocation
+from fairdivision.algorithms.ordered_picking import ordered_picking
 from fairdivision.utils.checkers import *
 from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations
 
 
-worst_efx = 1
-tries = 30000
+worst_mms = 1
+tries = 1000
 
 n = 10
 m = 100
@@ -25,11 +24,11 @@ for i in range(tries):
 
     generate_valuations(agents, items, generator)
 
-    allocation = envy_cycle_elimination(agents, Allocation(agents), items)
+    allocation = ordered_picking(agents, items)
 
-    highest_efx = highest_efx_approximation(agents, allocation)
+    highest_mms = highest_mms_approximation(agents, items, allocation)
 
-    if highest_efx < worst_efx:
+    if highest_mms < worst_mms:
         print(f"seed: {seed}\n")
         print(f"n={n}, m={m}\n")
 
@@ -37,9 +36,9 @@ for i in range(tries):
 
         print_allocation(allocation)
 
-        print(f"highest EFX: {highest_efx}-EFX")
+        print(f"highest MMS: {highest_mms}-MMS")
 
-        worst_efx = highest_efx
+        worst_mms = highest_mms
 
     if not is_ef1(agents, allocation):
         print(f"seed: {seed}\n")
@@ -49,7 +48,7 @@ for i in range(tries):
 
         print_allocation(allocation)
 
-        print(f"highest EFX: {highest_efx}-EFX")
+        print(f"highest MMS: {highest_mms}-MMS")
 
         print("!!! NOT EF1 !!!")
         break

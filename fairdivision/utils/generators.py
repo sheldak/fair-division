@@ -8,7 +8,7 @@ from fairdivision.utils.items import Items
 
 
 class ValuationsGenerator:
-    def valuate(self, agent, item_or_bundle):
+    def valuate_items(self, items):
         raise Exception(f"Valuation function not implemented")
 
 
@@ -20,36 +20,40 @@ class AdditiveGenerator(ValuationsGenerator):
     parameters given during the instantiation of the class.
     """
 
-    def __init__(self, additive: bool = True, min: int = 0, max: int = 100):
-        self.additive: bool = additive
+    def __init__(self, min: int = 0, max: int = 100):
         self.min: int = min
         self.max: int = max
 
-    def valuate(self, agent: Agent, item_or_bundle: Item | Bundle) -> int:
+    def valuate_items(self, items: Items) -> list[int]:
         """
-        Returns valuation of `item_or_bundle` for `agent`.
+        Returns list of valuations of `items` for `agent`.
 
-        If `agent` already has a valuation for `item_or_bundle`, it is returned. Otherwise, the valuation is generated
-        uniformly at random.
+        The valuation is generated uniformly at random.
         """
 
-        if isinstance(item_or_bundle, Item):
-            return self.__valuate_item(agent, item_or_bundle)
-        elif isinstance(item_or_bundle, Bundle):
-            valuation = 0
+        return [random.randint(self.min, self.max) for _ in items]
 
-            for item in item_or_bundle.items:
-                valuation += self.__valuate_item(agent, item)
 
-            return valuation
-        else:
-            raise Exception(f"Can only valuate item or bundle, got {item_or_bundle}")
+class OrderedGenerator(ValuationsGenerator):
+    """
+    A class for generating additive valuations which valuate items in the same ranking for every agent.
 
-    def __valuate_item(self, agent: Agent, item: Item) -> int:
-        if agent.has_valuation(item):
-            return agent.get_valuation(item)
-        else:
-            return random.randint(self.min, self.max)
+    Valuations are integers taken uniformly at random from interval [`min`, `max`], where `min` and `max` are optional
+    parameters given during the instantiation of the class.
+    """
+
+    def __init__(self, min: int = 0, max: int = 100):
+        self.min: int = min
+        self.max: int = max
+
+    def valuate_items(self, items: Items) -> list[int]:
+        """
+        Returns list of valuations of `items` for `agent`.
+
+        The valuation is generated uniformly at random. Valuations are ordered in the descending order.
+        """
+
+        return sorted([random.randint(self.min, self.max) for _ in items], reverse=True)
 
 
 def generate_agents(n: int) -> Agents:
@@ -88,6 +92,7 @@ def generate_valuations(agents: Agents, items: Items, generator: ValuationsGener
     """
 
     for agent in agents:
-        for item in items:
-            valuation = generator.valuate(agent, item)
+        valuations = generator.valuate_items(items)
+
+        for item, valuation in zip(items.get_items(), valuations):
             agent.assign_valuation(item, valuation)

@@ -55,7 +55,7 @@ def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
     The result is rounded to 3 decimal places. If `allocation` is EFX0, returns `1`.
     """
 
-    alpha = 1
+    alpha = 1.0
 
     for agent_i in agents:
         for agent_j in agents:
@@ -107,7 +107,7 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
     The result is rounded to 3 decimal places. If `allocation` is EFX, returns `1`.
     """
 
-    alpha = 1
+    alpha = 1.0
 
     for agent_i in agents:
         for agent_j in agents:
@@ -161,12 +161,12 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
     The result is rounded to 3 decimal places. If `allocation` is EF1, returns `1`.
     """
 
-    alpha = 1
+    alpha = 1.0
 
     for agent_i in agents:
         for agent_j in agents:
             if agent_i != agent_j:
-                agent_i_alpha = 0
+                agent_i_alpha = 0.0
 
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -212,7 +212,7 @@ def highest_mms_approximation(agents: Agents, items: Items, allocation: Allocati
 
     maximin_shares = get_maximin_shares(agents, items)
 
-    alpha = 1
+    alpha = 1.0
 
     for agent, _ in allocation.get_allocation():
         valuation = agent.get_valuation(allocation.for_agent(agent))
@@ -224,7 +224,7 @@ def highest_mms_approximation(agents: Agents, items: Items, allocation: Allocati
     return round(alpha, 3)
 
 
-def is_eefx(agents: Agents, items: Items, allocation: Allocation) -> Literal[True] | tuple[Literal[False], tuple[Agent, Agent]]:
+def is_eefx(agents: Agents, items: Items, allocation: Allocation) -> Literal[True] | tuple[Literal[False], Agent]:
     """
     Checks if the given `allocation` of `items` to `agents` is epistemic envy-free up to any positively valued good.
 

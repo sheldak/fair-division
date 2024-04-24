@@ -6,7 +6,7 @@ from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations
 
 
-worst_mms = 1
+worst_mms = 1.0
 tries = 1000
 
 n = 10

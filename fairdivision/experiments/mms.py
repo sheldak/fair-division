@@ -7,7 +7,7 @@ from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations, get_maximin_shares
 
 
-worst_mms = 1
+worst_mms = 1.0
 tries = 1000
 
 n = 3
@@ -26,10 +26,10 @@ for i in range(tries):
     generate_valuations(agents, items, generator)
 
     maximin_shares = get_maximin_shares(agents, items)
-    highest_mms_with_allocation = (0, None)
+    highest_mms_with_allocation = (0.0, Allocation(agents))
 
     for allocation in all_allocations(agents, items):
-        alpha = 1
+        alpha = 1.0
 
         for agent in agents:
             valuation = agent.get_valuation(allocation.for_agent(agent))
@@ -40,7 +40,7 @@ for i in range(tries):
         if alpha > highest_mms_with_allocation[0]:
             highest_mms_with_allocation = (alpha, allocation)
 
-        if highest_mms_with_allocation[0] == 1:
+        if highest_mms_with_allocation[0] == 1.0:
             break
 
     highest_mms, allocation = highest_mms_with_allocation

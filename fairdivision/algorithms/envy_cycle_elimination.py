@@ -1,4 +1,4 @@
-import networkx as nx
+import networkx as nx # type: ignore
 from typing import Optional
 
 from fairdivision.utils.agent import Agent
@@ -11,8 +11,8 @@ def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items)
     """
     Returns a full allocation for the given `agents`, `items` and partial `allocation`.
 
-    While there are still unallocated items, gives the favorite one to the unenvied agent, breaking ties in favor of
-    empty bundles. Additionally, uses envy graph to redistribute bundles if no unenvied agent is present.
+    While there are still unallocated items, it gives the favorite one to the unenvied agent, breaking ties in favor of
+    empty bundles. Additionally, it uses an envy graph to redistribute bundles if no unenvied agent is present.
     """
 
     items_left = items.copy()
@@ -20,13 +20,13 @@ def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items)
 
     while items_left.size() > 0:
         unenvied_agent = get_unenvied_agent(graph, agents, allocation)
-        
+
         while unenvied_agent is None:
             cycle = nx.find_cycle(graph)
             graph = eliminate_cycle(agents, cycle, allocation)
 
             unenvied_agent = get_unenvied_agent(graph, agents, allocation)
-        
+
         favorite_item = unenvied_agent.get_favorite_item(items_left)
         allocation.allocate(unenvied_agent, favorite_item)
         items_left.delete_item(favorite_item)
@@ -41,13 +41,19 @@ def create_envy_graph(agents: Agents, allocation: Allocation) -> nx.DiGraph:
     Creates envy graph from the given `allocation`.
 
     Each node in the graph is an agent. An edge `(i, j)` represents that the agent `i` envies the bundle of agent `j`.
+    Only the agents with non-empty bundles can be envied so we only check envy towards them.
     """
 
     graph = nx.DiGraph()
     graph.add_nodes_from(agents)
+
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
     
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i.envies(agent_j, allocation):
                 graph.add_edge(agent_i, agent_j)
 

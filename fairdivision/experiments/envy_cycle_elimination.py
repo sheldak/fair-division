@@ -7,7 +7,7 @@ from fairdivision.utils.generators import *
 from fairdivision.utils.helpers import print_allocation, print_valuations
 
 
-worst_efx = 1
+worst_efx = 1.0
 tries = 30000
 
 n = 10

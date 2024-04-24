@@ -1,4 +1,4 @@
-import networkx as nx
+import networkx as nx # type: ignore
 
 from fairdivision.algorithms.all_allocations import all_allocations
 from fairdivision.utils.agent import Agent

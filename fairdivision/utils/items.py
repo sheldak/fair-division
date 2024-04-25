@@ -52,7 +52,7 @@ class Items:
         else:
             raise Exception(f"{self.items} does not contain item with index {index}")
 
-    def delete_item(self, index_or_item: int | Item) -> None:
+    def remove_item(self, index_or_item: int | Item) -> None:
         if isinstance(index_or_item, int):
             self.items.pop(index_or_item)
             self.sorted_items = list(filter(lambda item: item.get_index() != index_or_item, self.sorted_items))

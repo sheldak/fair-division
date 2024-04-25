@@ -90,6 +90,6 @@ def pick_items(agents: Agents, items: Items, picking_sequence: list[Agent]) -> A
     for picking_agent in picking_sequence:
         favorite_item = picking_agent.get_favorite_item(items_left)
         allocation.allocate(picking_agent, favorite_item)
-        items_left.delete_item(favorite_item)
+        items_left.remove_item(favorite_item)
 
     return allocation

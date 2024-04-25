@@ -49,7 +49,7 @@ class Agents:
         else:
             raise Exception(f"{self.agents} does not contain agent with index {index}")
         
-    def delete_agent(self, index_or_agent: int | Agent) -> None:
+    def remove_agent(self, index_or_agent: int | Agent) -> None:
         if isinstance(index_or_agent, int):
             self.agents.pop(index_or_agent)
             self.sorted_agents = list(filter(lambda agent: agent.get_index() != index_or_agent, self.sorted_agents))

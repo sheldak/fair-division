@@ -7,7 +7,7 @@ from fairdivision.utils.importers import import_from_file
 
 
 # Envy Cycle Elimination returns an EF1 allocation for every additive instance.
-# Proven in "On approximately fair allocations of indivisible goods" by Lipton et al.
+# Shown in "On approximately fair allocations of indivisible goods" by Lipton et al.
 def test_envy_cycle_elimination_ef1():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
@@ -20,7 +20,7 @@ def test_envy_cycle_elimination_ef1():
 
 
 # Envy Cycle Elimination returns an 1/2-EFX allocation for every additive instance.
-# Proven in "Maximin-aware allocations of indivisible goods" by Chan et al.
+# Shown in "Maximin-aware allocations of indivisible goods" by Chan et al.
 def test_envy_cycle_elimination_efx_approximation():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
@@ -32,7 +32,7 @@ def test_envy_cycle_elimination_efx_approximation():
             assert highest_efx_approximation(agents, allocation) >= 1/2
 
 # Envy Cycle Elimination returns an 1/2-MMS allocation for every additive instance.
-# Proven in "Fair Division of Indivisible Goods: Recent Progress and Open Questions" by Amanatidis et al.
+# Shown in "Fair Division of Indivisible Goods: Recent Progress and Open Questions" by Amanatidis et al.
 def test_envy_cycle_elimination_mms_approximation():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
@@ -45,7 +45,7 @@ def test_envy_cycle_elimination_mms_approximation():
 
 
 # Envy Cycle Elimination returns an EFX allocation for an ordered additive instance.
-# Proven in "Almost envy-freeness with general valuations" by Plaut and Roughgarden.
+# Shown in "Almost envy-freeness with general valuations" by Plaut and Roughgarden.
 def test_envy_cycle_elimination_ordered_efx():
     agents, items, _ = import_from_file(f"instances/ordered.txt")
     allocation = Allocation(agents)

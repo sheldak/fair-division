@@ -29,7 +29,7 @@ def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items)
 
         favorite_item = unenvied_agent.get_favorite_item(items_left)
         allocation.allocate(unenvied_agent, favorite_item)
-        items_left.delete_item(favorite_item)
+        items_left.remove_item(favorite_item)
 
         update_graph(graph, agents, allocation, unenvied_agent)
 
@@ -50,7 +50,7 @@ def create_envy_graph(agents: Agents, allocation: Allocation) -> nx.DiGraph:
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
     
     for agent_i in agents:
         for agent_j in possibly_envied_agents:

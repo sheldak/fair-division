@@ -8,7 +8,7 @@ from fairdivision.utils.importers import import_from_file
 
 
 # Round Robin returns an EF1 allocation for every additive instance.
-# Proven in "The unreasonable fairness of maximum Nash welfare" by Caragiannis et al.
+# Shown in "The unreasonable fairness of maximum Nash welfare" by Caragiannis et al.
 def test_round_robin_ef1():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
@@ -24,7 +24,7 @@ def test_round_robin_ef1():
 
 # Round Robin returns an 1/2-MMS allocation for every additive instance if there is no item that any agent values at
 # least 1/2 of their maximin share.
-# Proven in "Approximation algorithms for computing maximin share allocations" by Amanatidis et al.
+# Shown in "Approximation algorithms for computing maximin share allocations" by Amanatidis et al.
 def test_round_robin_mms_approximation():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")

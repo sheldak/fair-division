@@ -49,8 +49,8 @@ class Bundle:
     def add_item(self, item: Item) -> None:
         self.items.add_item(item)
     
-    def delete_item(self, index_or_item: int | Item) -> None:
-        self.items.delete_item(index_or_item)
+    def remove_item(self, index_or_item: int | Item) -> None:
+        self.items.remove_item(index_or_item)
 
     def get_items(self) -> Items:
         return self.items

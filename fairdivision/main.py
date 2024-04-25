@@ -1,6 +1,7 @@
 import random
 
 from fairdivision.algorithms.all_allocations import all_allocations
+from fairdivision.algorithms.draft_and_eliminate import draft_and_eliminate
 from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.algorithms.ordered_picking import ordered_picking
 from fairdivision.algorithms.round_robin import round_robin
@@ -12,23 +13,23 @@ from fairdivision.utils.helpers import print_allocation, print_valuations
 from fairdivision.utils.importers import import_from_file
 
 
-# seed = 31350826
+# seed = 8281
 seed = random.randint(1, 100_000)
 random.seed(seed)
 print(f"seed: {seed}\n")
 
-n = 100
-m = 2000
+n = 10
+m = 100
 
-agents, items, restrictions = import_from_file(f"instances/ordered_picking_0333_ef1.txt")
+# agents, items, restrictions = import_from_file(f"instances/ordered_picking_0333_ef1.txt")
 
-# agents = generate_agents(n)
-# items = generate_items(m)
+agents = generate_agents(n)
+items = generate_items(m)
 
-# generator = AdditiveGenerator(min=0, max=10000)
+generator = AdditiveGenerator(min=0, max=10000)
 # generator = OrderedGenerator(min=0, max=10000)
 
-# generate_valuations(agents, items, generator)
+generate_valuations(agents, items, generator)
 
 print_valuations(agents, items)
 
@@ -36,8 +37,9 @@ allocation = Allocation(agents)
 # ordering = [i for i in range(1, n+1)]
 
 # (allocation, items_left) = round_robin(agents, allocation, items, ordering, "inf")
-allocation = envy_cycle_elimination(agents, allocation, items)
+# allocation = envy_cycle_elimination(agents, allocation, items)
 # allocation = ordered_picking(agents, items)
+allocation = draft_and_eliminate(agents, items)
 
 print_allocation(allocation)
 
@@ -60,5 +62,3 @@ print()
 # if not mms == True:
 #     print(f"highest MMS: {highest_mms_approximation(agents, items, allocation)}-MMS")
 # print()
-
-

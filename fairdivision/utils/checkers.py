@@ -19,7 +19,7 @@ def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Liter
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
      
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -39,7 +39,7 @@ def is_efx0(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lit
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -48,7 +48,7 @@ def is_efx0(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lit
 
                 for item_to_remove in allocation.for_agent(agent_j):
                     items_subset = allocation.for_agent(agent_j).copy()
-                    items_subset.delete_item(item_to_remove)
+                    items_subset.remove_item(item_to_remove)
 
                     valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -70,7 +70,7 @@ def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -79,7 +79,7 @@ def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
 
                 for item_to_remove in allocation.for_agent(agent_j):
                     items_subset = allocation.for_agent(agent_j).copy()
-                    items_subset.delete_item(item_to_remove)
+                    items_subset.remove_item(item_to_remove)
 
                     valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -100,7 +100,7 @@ def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -110,7 +110,7 @@ def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
                 for item_to_remove in allocation.for_agent(agent_j):
                     if agent_i.get_valuation(item_to_remove) > 0:
                         items_subset = allocation.for_agent(agent_j).copy()
-                        items_subset.delete_item(item_to_remove)
+                        items_subset.remove_item(item_to_remove)
 
                         valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -132,7 +132,7 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -142,7 +142,7 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
                 for item_to_remove in allocation.for_agent(agent_j):
                     if agent_i.get_valuation(item_to_remove) > 0:
                         items_subset = allocation.for_agent(agent_j).copy()
-                        items_subset.delete_item(item_to_remove)
+                        items_subset.remove_item(item_to_remove)
 
                         valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -163,7 +163,7 @@ def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -172,7 +172,7 @@ def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
 
                 for item_to_remove in allocation.for_agent(agent_j):
                     items_subset = allocation.for_agent(agent_j).copy()
-                    items_subset.delete_item(item_to_remove)
+                    items_subset.remove_item(item_to_remove)
 
                     valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -196,7 +196,7 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
     possibly_envied_agents = agents.copy()
     for agent in agents:
         if allocation.for_agent(agent).size() == 0:
-            possibly_envied_agents.delete_agent(agent)
+            possibly_envied_agents.remove_agent(agent)
 
     for agent_i in agents:
         for agent_j in possibly_envied_agents:
@@ -207,7 +207,7 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
 
                 for item_to_remove in allocation.for_agent(agent_j):
                     items_subset = allocation.for_agent(agent_j).copy()
-                    items_subset.delete_item(item_to_remove)
+                    items_subset.remove_item(item_to_remove)
 
                     valuation_of_j = agent_i.get_valuation(items_subset)
 
@@ -269,11 +269,11 @@ def is_eefx(agents: Agents, items: Items, allocation: Allocation) -> Literal[Tru
     # check if EFX certificate can be found for each agent
     for agent in agents:
         other_agents = agents.copy()
-        other_agents.delete_agent(agent)
+        other_agents.remove_agent(agent)
         
         other_items = items.copy()
         for item in allocation.for_agent(agent):
-            other_items.delete_item(item)
+            other_items.remove_item(item)
 
         self_valuation = agent.get_valuation(allocation.for_agent(agent))
 
@@ -286,7 +286,7 @@ def is_eefx(agents: Agents, items: Items, allocation: Allocation) -> Literal[Tru
                 for item_to_remove in possible_efx_certificate.for_agent(other_agent):
                     if agent.get_valuation(item_to_remove) > 0:
                         items_subset = possible_efx_certificate.for_agent(other_agent).copy()
-                        items_subset.delete_item(item_to_remove)
+                        items_subset.remove_item(item_to_remove)
 
                         other_valuation = agent.get_valuation(items_subset)
 

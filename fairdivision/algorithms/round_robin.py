@@ -29,7 +29,7 @@ def round_robin(
         
         allocation.allocate(agent, favorite_item)
 
-        items_left.delete_item(favorite_item)
+        items_left.remove_item(favorite_item)
 
         step += 1
 

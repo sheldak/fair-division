@@ -15,9 +15,14 @@ def is_ef(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Liter
 
     Returns `True` if it is EF or tuple `(False, (evious_agent, envied_agent))` otherwise.
     """
+
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
      
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 if agent_i.envies(agent_j, allocation):
                     return (False, (agent_i, agent_j))
@@ -31,8 +36,13 @@ def is_efx0(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lit
     Returns `True` if it is EFX0 or tuple `(False, (evious_agent, envied_agent))` otherwise.
     """
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -57,8 +67,13 @@ def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
 
     alpha = 1.0
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -82,8 +97,13 @@ def is_efx(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
     Returns `True` if it is EFX or tuple `(False, (evious_agent, envied_agent))` otherwise.
     """
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -109,8 +129,13 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
 
     alpha = 1.0
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -135,8 +160,13 @@ def is_ef1(agents: Agents, allocation: Allocation) -> Literal[True] | tuple[Lite
     Returns `True` if it is EF1 or tuple `(False, (evious_agent, envied_agent))` otherwise.
     """
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 valuation_of_i = agent_i.get_valuation(allocation.for_agent(agent_i))
 
@@ -163,8 +193,13 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
 
     alpha = 1.0
 
+    possibly_envied_agents = agents.copy()
+    for agent in agents:
+        if allocation.for_agent(agent).size() == 0:
+            possibly_envied_agents.delete_agent(agent)
+
     for agent_i in agents:
-        for agent_j in agents:
+        for agent_j in possibly_envied_agents:
             if agent_i != agent_j:
                 agent_i_alpha = 0.0
 

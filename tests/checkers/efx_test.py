@@ -1,4 +1,4 @@
-from fairdivision.utils.checkers import is_efx, is_efx0, highest_efx_approximation, highest_efx0_approximation
+from fairdivision.utils.checkers import is_efx, is_efx0, highest_efx_approximation, highest_efx0_approximation, efx_satisfied_factor, efx0_satisfied_factor
 from fairdivision.utils.importers import import_from_file, import_allocation_from_dict
 
 
@@ -20,10 +20,12 @@ def test_efx_positive():
     allocation = import_allocation_from_dict(agents, items, EFX_ALLOCATION)
 
     assert is_efx(agents, allocation) == True
-    assert highest_efx_approximation(agents, allocation) == 1
+    assert highest_efx_approximation(agents, allocation) == 1.0
+    assert efx_satisfied_factor(agents, allocation) == 1.0
 
     assert is_efx0(agents, allocation) == True
-    assert highest_efx0_approximation(agents, allocation) == 1
+    assert highest_efx0_approximation(agents, allocation) == 1.0
+    assert efx0_satisfied_factor(agents, allocation) == 1.0
 
 
 def test_efx_negative():
@@ -32,10 +34,11 @@ def test_efx_negative():
 
     assert is_efx(agents, allocation) == (False, (agents.get_agent(1), agents.get_agent(2)))
     assert highest_efx_approximation(agents, allocation) == 0.667
+    assert efx_satisfied_factor(agents, allocation) == 0.667
 
     assert is_efx0(agents, allocation) == (False, (agents.get_agent(1), agents.get_agent(2)))
     assert highest_efx0_approximation(agents, allocation) == 0.667
-
+    assert efx0_satisfied_factor(agents, allocation) == 0.667
 
 EFX_BUT_NOT_EFX0_ALLOCATION = {
     1: [1, 2],
@@ -47,7 +50,9 @@ def test_efx_but_not_efx0():
     allocation = import_allocation_from_dict(agents, items, EFX_BUT_NOT_EFX0_ALLOCATION)
 
     assert is_efx(agents, allocation) == True
-    assert highest_efx_approximation(agents, allocation) == 1
+    assert highest_efx_approximation(agents, allocation) == 1.0
+    assert efx_satisfied_factor(agents, allocation) == 1.0
 
     assert is_efx0(agents, allocation) == (False, (agents.get_agent(2), agents.get_agent(1)))
     assert highest_efx0_approximation(agents, allocation) == 0.667
+    assert efx0_satisfied_factor(agents, allocation) == 0.5

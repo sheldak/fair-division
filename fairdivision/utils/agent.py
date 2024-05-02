@@ -42,8 +42,8 @@ class Agent:
     def has_valuation(self, item_or_bundle: Item | Bundle) -> bool:
         return item_or_bundle in self.valuations
 
-    def get_valuation(self, item_or_bundle: Item | Bundle) -> int:
-        if isinstance(item_or_bundle, Bundle) and self.valuations_additive:
+    def get_valuation(self, item_or_bundle: Item | Items | Bundle) -> int:
+        if (isinstance(item_or_bundle, Bundle) or isinstance(item_or_bundle, Items)) and self.valuations_additive:
             valuation = 0
             for item in item_or_bundle:
                 valuation += self.valuations[item]

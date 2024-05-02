@@ -7,15 +7,19 @@ from fairdivision.utils.allocation import Allocation
 from fairdivision.utils.items import Items
 
 
-def envy_cycle_elimination(agents: Agents, allocation: Allocation, items: Items) -> Allocation:
+def envy_cycle_elimination(agents: Agents, items: Items, allocation: Optional[Allocation] = None) -> Allocation:
     """
-    Returns a full allocation for the given `agents`, `items` and partial `allocation`.
+    Returns a full allocation for the given `agents`, `items` and optional partial `allocation`.
 
     While there are still unallocated items, it gives the favorite one to the unenvied agent, breaking ties in favor of
     empty bundles. Additionally, it uses an envy graph to redistribute bundles if no unenvied agent is present.
     """
 
     items_left = items.copy()
+
+    if allocation is None:
+        allocation = Allocation(agents)
+
     graph = create_envy_graph(agents, allocation)
 
     while items_left.size() > 0:

@@ -30,12 +30,12 @@ def draft_and_eliminate(agents: Agents, items: Items) -> Allocation:
     ordering, quite_happy_n = preprocessing(agents, items)
 
     allocation = Allocation(agents)
-    allocation, items_left = round_robin(agents, allocation, items, ordering, n)
+    allocation, items_left = round_robin(agents, items, allocation, ordering, n)
 
     reversed_ordering = list(reversed(ordering))
-    allocation, items_left = round_robin(agents, allocation, items_left, reversed_ordering, n - quite_happy_n)
+    allocation, items_left = round_robin(agents, items_left, allocation, reversed_ordering, n - quite_happy_n)
 
-    return envy_cycle_elimination(agents, allocation, items_left)
+    return envy_cycle_elimination(agents, items_left, allocation)
 
 
 # Implementation of Algorithm 4 from "Multiple birds with one stone: Beating 1/2 for EFX and GMMS via envy cycle

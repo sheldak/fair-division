@@ -2,6 +2,7 @@ import random
 
 from fairdivision.algorithms.all_allocations import all_allocations
 from fairdivision.algorithms.draft_and_eliminate import draft_and_eliminate
+from fairdivision.algorithms.efx_envy_cycle_elimination import efx_envy_cycle_elimination
 from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.algorithms.ordered_picking import ordered_picking
 from fairdivision.algorithms.round_robin import round_robin
@@ -13,33 +14,31 @@ from fairdivision.utils.helpers import print_allocation, print_valuations
 from fairdivision.utils.importers import import_from_file
 
 
-# seed = 8281
+# seed = 6923741
 seed = random.randint(1, 100_000)
 random.seed(seed)
 print(f"seed: {seed}\n")
 
-n = 10
-m = 100
+# agents, items, restrictions = import_from_file(f"instances/counter_efx.txt")
 
-# agents, items, restrictions = import_from_file(f"instances/ordered_picking_0333_ef1.txt")
+n = 5
+m = 10
 
 agents = generate_agents(n)
 items = generate_items(m)
 
-generator = AdditiveGenerator(min=0, max=10000)
-# generator = OrderedGenerator(min=0, max=10000)
+generator = AdditiveGenerator()
+# generator = OrderedGenerator()
 
 generate_valuations(agents, items, generator)
 
 print_valuations(agents, items)
 
-allocation = Allocation(agents)
-# ordering = [i for i in range(1, n+1)]
-
-# (allocation, items_left) = round_robin(agents, allocation, items, ordering, "inf")
-# allocation = envy_cycle_elimination(agents, allocation, items)
-# allocation = ordered_picking(agents, items)
-allocation = draft_and_eliminate(agents, items)
+# (allocation, items_left) = round_robin(agents, items)
+# allocation = efx_envy_cycle_elimination(agents, items)
+# allocation = envy_cycle_elimination(agents, items)
+allocation = ordered_picking(agents, items)
+# allocation = draft_and_eliminate(agents, items)
 
 print_allocation(allocation)
 
@@ -51,10 +50,15 @@ if not efx == True:
     print(f"highest EFX: {highest_efx_approximation(agents, allocation)}-EFX")
 print()
 
+# ef2 = is_ef2(agents, allocation)
+# print(f"EF2: {ef2}")
+# print()
+
 ef1 = is_ef1(agents, allocation)
 print(f"EF1: {ef1}")
 if not ef1 == True:
     print(f"highest EF1: {highest_ef1_approximation(agents, allocation)}-EF1")
+    print(f"factor of EF1-satisfied agents: {ef1_satisfied_factor(agents, allocation)}")
 print()
 
 # mms = is_mms(agents, items, allocation)

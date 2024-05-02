@@ -34,7 +34,7 @@ def ordered_picking(agents: Agents, items: Items) -> Allocation:
     ordered_items = generate_items(items.size(), items.size() + 1)
     assign_valuations_in_order(agents, items, ordered_items)
 
-    allocation_for_ordered = envy_cycle_elimination(agents, Allocation(agents), ordered_items)
+    allocation_for_ordered = envy_cycle_elimination(agents, ordered_items)
 
     picking_sequence = get_picking_sequence(ordered_items, allocation_for_ordered)
 

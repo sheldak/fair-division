@@ -25,7 +25,7 @@ for i in range(tries):
 
     generate_valuations(agents, items, generator)
 
-    allocation = envy_cycle_elimination(agents, Allocation(agents), items)
+    allocation = envy_cycle_elimination(agents, items)
 
     highest_efx = highest_efx_approximation(agents, allocation)
 

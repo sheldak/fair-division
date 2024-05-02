@@ -12,9 +12,7 @@ def test_envy_cycle_elimination_ef1():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
         if "additive" in restrictions:
-            allocation = Allocation(agents)
-
-            allocation = envy_cycle_elimination(agents, allocation, items)
+            allocation = envy_cycle_elimination(agents, items)
 
             assert is_ef1(agents, allocation) == True
 
@@ -25,9 +23,7 @@ def test_envy_cycle_elimination_efx_approximation():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
         if "additive" in restrictions:
-            allocation = Allocation(agents)
-
-            allocation = envy_cycle_elimination(agents, allocation, items)
+            allocation = envy_cycle_elimination(agents, items)
 
             assert highest_efx_approximation(agents, allocation) >= 1/2
 
@@ -37,9 +33,7 @@ def test_envy_cycle_elimination_mms_approximation():
     for file_name in os.listdir("instances"):
         agents, items, restrictions = import_from_file(f"instances/{file_name}")
         if "additive" in restrictions:
-            allocation = Allocation(agents)
-
-            allocation = envy_cycle_elimination(agents, allocation, items)
+            allocation = envy_cycle_elimination(agents, items)
 
             assert highest_mms_approximation(agents, items, allocation) >= 1/2
 
@@ -48,8 +42,6 @@ def test_envy_cycle_elimination_mms_approximation():
 # Shown in "Almost envy-freeness with general valuations" by Plaut and Roughgarden.
 def test_envy_cycle_elimination_ordered_efx():
     agents, items, _ = import_from_file(f"instances/ordered.txt")
-    allocation = Allocation(agents)
-
-    allocation = envy_cycle_elimination(agents, allocation, items)
+    allocation = envy_cycle_elimination(agents, items)
 
     assert is_efx(agents, allocation) == True

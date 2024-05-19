@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Iterator
 
 from fairdivision.utils.agent import Agent
@@ -35,6 +36,19 @@ class Allocation:
             bundle = Bundle(Items())
             bundle.assign_agent(agent)
             self.allocation[agent] = bundle
+
+    def copy(self) -> Allocation:
+        agents = Agents(list(self.allocation.keys()))
+
+        new_allocation = Allocation(agents)
+
+        for agent in agents:
+            bundle = self.for_agent(agent).copy()
+            
+            for item in bundle:
+                new_allocation.allocate(agent, item)
+
+        return new_allocation
 
     def allocate(self, agent: Agent, item: Item) -> None:
         self.allocation[agent].add_item(item)

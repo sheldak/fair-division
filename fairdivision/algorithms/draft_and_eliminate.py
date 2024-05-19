@@ -1,6 +1,4 @@
 from math import sqrt
-from typing import Tuple
-
 
 from fairdivision.algorithms.envy_cycle_elimination import envy_cycle_elimination
 from fairdivision.algorithms.round_robin import round_robin
@@ -40,7 +38,7 @@ def draft_and_eliminate(agents: Agents, items: Items) -> Allocation:
 
 # Implementation of Algorithm 4 from "Multiple birds with one stone: Beating 1/2 for EFX and GMMS via envy cycle
 # elimination" by Amanatidis et al.
-def preprocessing(agents: Agents, items: Items) -> Tuple[list[int], int]:
+def preprocessing(agents: Agents, items: Items) -> tuple[list[int], int]:
     """
     Creates ordering of `agents` for distribution of the first one to two items per agent, and decides how many agents
     will be "quite happy" with only one item.

@@ -55,7 +55,7 @@ class Agent:
             else:
                 raise Exception(f"Agent {self} has no valuation for {item_or_bundle}")
         else:
-            raise Exception(f"Agent can only have valuation for Item or Bundle. Got {item_or_bundle}")
+            raise Exception(f"Agent can only have valuation for Item, Items, or Bundle. Got {item_or_bundle}")
 
     def get_favorite_item(self, items: Items) -> Item:
         if items.size() > 0:

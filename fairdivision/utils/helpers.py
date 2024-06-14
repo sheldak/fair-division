@@ -1,4 +1,5 @@
 import networkx as nx # type: ignore
+import os
 
 from fairdivision.algorithms.all_allocations import all_allocations
 from fairdivision.utils.agent import Agent
@@ -23,6 +24,27 @@ def get_maximin_shares(agents: Agents, items: Items) -> dict[Agent, int]:
             maximin_shares[agent] = max(maximin_shares[agent], worst_valuation)
 
     return maximin_shares
+
+
+def export_to_file(agents: Agents, items: Items, file_path: str) -> None:
+    """
+    Exports Agents, Items and a list of valuations to the file `file_path`.
+
+    The file will follow the standard of fair division instance described in the README.md file.
+    """
+
+    with open(file_path, "a") as file:
+        file.write("additive\n")
+        file.write(f"{agents.size()} {items.size()}\n")
+
+        for agent in agents:
+            file.write(f"{agent.get_valuation(items.get_items()[0])}")
+
+            for item in items.get_items()[1:]:
+                file.write(f" {agent.get_valuation(item)}")
+
+            if agent != agents.get_agents()[-1]:
+                file.write("\n")
 
 
 def print_envy_graph(graph: nx.DiGraph) -> None:

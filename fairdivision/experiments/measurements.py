@@ -1,10 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import time
-from typing import Any, Callable, Tuple
+from typing import Any, Callable
 
+from fairdivision.utils.checkers import *
 
-def with_duration(function: Callable, *args: Any) -> Tuple[Any, float]:
+# Measuring time
+
+def with_duration(function: Callable, *args: Any) -> tuple[Any, float]:
     """
     Calls `function` with given `args` as arguments and returns its result together with the time of execution.
     """
@@ -16,7 +19,7 @@ def with_duration(function: Callable, *args: Any) -> Tuple[Any, float]:
     return result, duration
 
 
-def initialize_statistics(labels: list[str]) -> Tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
+def initialize_statistics(labels: list[str]) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
     """
     Initializes means per each label and standard deviations per each label.
 
@@ -29,7 +32,7 @@ def initialize_statistics(labels: list[str]) -> Tuple[dict[str, np.ndarray], dic
     return means_per_labels, stds_per_labels
 
 
-def durations_to_statistics(measurements: list[dict[str, list[int]]], label: str) -> Tuple[np.float64, np.float64]:
+def durations_to_statistics(measurements: list[dict[str, list[int]]], label: str) -> tuple[np.float64, np.float64]:
     """
     Calculates mean and standard deviation from collected `measurement` for a particular `label`.
 
@@ -50,7 +53,7 @@ def update_statistics(
         means_per_label: dict[str, np.ndarray],
         stds_per_label: dict[str, np.ndarray],
         measurements: list[dict[str, list[int]]],
-        labels: list[str]) -> Tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
+        labels: list[str]) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
     """
     For every label in `labels`, adds mean and standard deviation calcualted from `measurements` to given
     `means_per_label` and `stds_per_label`.
@@ -64,7 +67,7 @@ def update_statistics(
     return means_per_label, stds_per_label
 
 
-def draw(
+def draw_statistics(
         x: np.ndarray,
         y_means_per_labels: dict[str, np.ndarray],
         y_stds_per_labels: dict[str, np.ndarray],

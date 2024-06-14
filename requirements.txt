@@ -1,3 +1,5 @@
+matplotlib
 mypy
 networkx
+numpy
 pytest

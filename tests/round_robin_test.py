@@ -28,10 +28,10 @@ def test_round_robin_mms_approximation():
         if "additive" in restrictions:
             valid_instance = True
             maximin_share = get_maximin_shares(agents, items)
-
+ 
             for agent in agents:
                 for item in items:
-                    if agent.has_valuation(item) > 0.5 * maximin_share[agent]:
+                    if agent.get_valuation(item) > 0.5 * maximin_share[agent]:
                         valid_instance = False
 
             if valid_instance:

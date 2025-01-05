@@ -1,4 +1,4 @@
-from fairdivision.utils.checkers import is_ef1, highest_ef1_approximation, ef1_satisfied_factor
+from fairdivision.utils.checkers import is_ef1, highest_ef1_approximation, ef1_satisfied_fraction
 from fairdivision.utils.importers import import_from_file, import_allocation_from_dict
 
 
@@ -21,7 +21,7 @@ def test_ef1_positive():
 
     assert is_ef1(agents, allocation) == True
     assert highest_ef1_approximation(agents, allocation) == 1.0
-    assert ef1_satisfied_factor(agents, allocation) == 1.0
+    assert ef1_satisfied_fraction(agents, allocation) == 1.0
 
 
 def test_ef1_negative():
@@ -30,4 +30,4 @@ def test_ef1_negative():
 
     assert is_ef1(agents, allocation) == (False, (agents.get_agent(1), agents.get_agent(3)))
     assert highest_ef1_approximation(agents, allocation) == 0.667
-    assert ef1_satisfied_factor(agents, allocation) == 0.667
+    assert ef1_satisfied_fraction(agents, allocation) == 0.667

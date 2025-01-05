@@ -11,14 +11,14 @@ from fairdivision.utils.items import Items
 class Node():
     def __init__(self, item: Item):
         self.item = item
-        self.previous = None
-        self.next = None
+        self.previous: Optional[Node] = None
+        self.next: Optional[Node] = None
 
 
 class FavoriteItems():
     def __init__(self, agent: Agent, items: Items):
         self.agent = agent
-        self.favorite_item_node = None
+        self.favorite_item_node: Optional[Node] = None
         self.nodes: dict[Item, Node] = dict()
 
         self.initialize(items)

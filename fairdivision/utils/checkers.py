@@ -90,9 +90,9 @@ def highest_efx0_approximation(agents: Agents, allocation: Allocation) -> float:
     return round(alpha, 3)
 
 
-def efx0_satisfied_factor(agents: Agents, allocation: Allocation) -> float:
+def efx0_satisfied_fraction(agents: Agents, allocation: Allocation) -> float:
     """
-    Returns a factor of `agents` that are not envious up to any good.
+    Returns a fraction of `agents` that are not envious up to any good.
 
     Returns 1 if `allocation` is EFX0. 
     """
@@ -193,9 +193,9 @@ def highest_efx_approximation(agents: Agents, allocation: Allocation) -> float:
     return round(alpha, 3)
 
 
-def efx_satisfied_factor(agents: Agents, allocation: Allocation) -> float:
+def efx_satisfied_fraction(agents: Agents, allocation: Allocation) -> float:
     """
-    Returns a factor of `agents` that are not envious up to any positively valued good.
+    Returns a fraction of `agents` that are not envious up to any positively valued good.
 
     Returns 1 if `allocation` is EFX. 
     """
@@ -337,9 +337,9 @@ def highest_ef1_approximation(agents: Agents, allocation: Allocation) -> float:
     return round(alpha, 3)
 
 
-def ef1_satisfied_factor(agents: Agents, allocation: Allocation) -> float:
+def ef1_satisfied_fraction(agents: Agents, allocation: Allocation) -> float:
     """
-    Returns a factor of `agents` that are not envious up to one good.
+    Returns a fraction of `agents` that are not envious up to one good.
 
     Returns 1 if `allocation` is EF1. 
     """
@@ -501,9 +501,9 @@ def highest_prop_approximation(agents: Agents, items: Items, allocation: Allocat
     return round(alpha, 3)
 
 
-def prop_satisfied_factor(agents: Agents, items: Items, allocation: Allocation) -> float:
+def prop_satisfied_fraction(agents: Agents, items: Items, allocation: Allocation) -> float:
     """
-    Returns a factor of `agents` that are satisfied according to proportionality.
+    Returns a fraction of `agents` that are satisfied according to proportionality.
 
     Returns 1 if `allocation` is PROP. 
     """

@@ -1,4 +1,4 @@
-from fairdivision.utils.checkers import is_prop, highest_prop_approximation, prop_satisfied_factor
+from fairdivision.utils.checkers import is_prop, highest_prop_approximation, prop_satisfied_fraction
 from fairdivision.utils.importers import import_from_file, import_allocation_from_dict
 
 PROP_ALLOCATION = {
@@ -20,7 +20,7 @@ def test_prop_positive():
 
     assert is_prop(agents, items, allocation) == True
     assert highest_prop_approximation(agents, items, allocation) == 1.0
-    assert prop_satisfied_factor(agents, items, allocation) == 1.0
+    assert prop_satisfied_fraction(agents, items, allocation) == 1.0
 
 
 def test_prop_negative():
@@ -29,4 +29,4 @@ def test_prop_negative():
 
     assert is_prop(agents, items, allocation) == (False, agents.get_agent(1))
     assert highest_prop_approximation(agents, items, allocation) == 0.5
-    assert prop_satisfied_factor(agents, items, allocation) == 0.333
+    assert prop_satisfied_fraction(agents, items, allocation) == 0.333

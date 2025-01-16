@@ -40,11 +40,8 @@ def test_get_efx_preserving_agent_one_agent_empty_bundle():
     items_left = items.copy()
     items_left.remove_item(items.get_item(1))
 
-    tie_break_order = agents.get_agents()
-    tie_break_order_reversed = list(reversed(agents.get_agents()))
-
-    assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, tie_break_order, allocation)
-    assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, tie_break_order_reversed, allocation)
+    for _ in range(10):
+        assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, allocation)
 
 
 def test_get_efx_preserving_agent_one_agent_non_empty_bundle():
@@ -69,9 +66,8 @@ def test_get_efx_preserving_agent_one_agent_non_empty_bundle():
     items_left.remove_item(items.get_item(2))
     items_left.remove_item(items.get_item(3))
 
-    tie_break_order = agents.get_agents()
-
-    assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, tie_break_order, allocation)
+    for _ in range(10):
+        assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, allocation)
 
 
 def test_get_efx_preserving_agent_more_agents_all_empty():
@@ -85,11 +81,13 @@ def test_get_efx_preserving_agent_more_agents_all_empty():
 
     allocation = Allocation(agents)
 
-    tie_break_order = agents.get_agents()
-    tie_break_order_reversed = list(reversed(agents.get_agents()))
+    agents_chosen = set()
 
-    assert agents.get_agent(1) == get_efx_preserving_agent(agents, items, tie_break_order, allocation)
-    assert agents.get_agent(2) == get_efx_preserving_agent(agents, items, tie_break_order_reversed, allocation)
+    for _ in range(100):
+        agents_chosen.add(get_efx_preserving_agent(agents, items, allocation))
+
+    assert agents.get_agent(1) in agents_chosen
+    assert agents.get_agent(2) in agents_chosen
 
 
 def test_get_efx_preserving_agent_more_agents_none_empty():
@@ -114,11 +112,13 @@ def test_get_efx_preserving_agent_more_agents_none_empty():
     items_left.remove_item(items.get_item(2))
     items_left.remove_item(items.get_item(3))
 
-    tie_break_order = agents.get_agents()
-    tie_break_order_reversed = list(reversed(agents.get_agents()))
+    agents_chosen = set()
 
-    assert agents.get_agent(1) == get_efx_preserving_agent(agents, items_left, tie_break_order, allocation)
-    assert agents.get_agent(2) == get_efx_preserving_agent(agents, items_left, tie_break_order_reversed, allocation)
+    for _ in range(100):
+        agents_chosen.add(get_efx_preserving_agent(agents, items, allocation))
+
+    assert agents.get_agent(1) in agents_chosen
+    assert agents.get_agent(2) in agents_chosen
 
 
 def test_get_efx_preserving_agent_no_agents():
@@ -142,6 +142,4 @@ def test_get_efx_preserving_agent_no_agents():
     items_left.remove_item(items.get_item(2))
     items_left.remove_item(items.get_item(3))
 
-    tie_break_order = agents.get_agents()
-
-    assert get_efx_preserving_agent(agents, items_left, tie_break_order, allocation) is None
+    assert get_efx_preserving_agent(agents, items_left, allocation) is None

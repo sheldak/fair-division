@@ -13,11 +13,10 @@ def xp_ece(agents: Agents, items: Items, max_attempts: int = 1000) -> Allocation
     Returns an allocation for the given `agents` and `items`.
 
     While there are still unallocated items, it gives the favorite one to an agent that will certainly preserve the EFX
-    property of the allocation. If more agents are preserving EFX, one is chosen according to a random priority order.
-    Additionally, the algorithm uses an envy graph to redistribute bundles if no EFX-preserving agent is present. In
-    case there are simultaneously no envy cycles and no agents preserving EFX property, the algorithm starts from
-    scratch. A new tie-breaking order is randomly generated for every attempt to give an item, so each rerun of the
-    algorithm may differ.
+    property of the allocation. If more agents are preserving EFX, one is chosen randomly. Additionally, the algorithm
+    uses an envy graph to redistribute bundles if no EFX-preserving agent is present. In case there are simultaneously
+    no envy cycles and no agents preserving EFX property, the algorithm starts from scratch. Random choice of the agent
+    receiving an item ensures a high probability of a different outcome in each rerun.
     """
 
     for _ in range(max_attempts):
@@ -25,9 +24,7 @@ def xp_ece(agents: Agents, items: Items, max_attempts: int = 1000) -> Allocation
         allocation = Allocation(agents)
 
         while items_left.size() > 0:
-            tie_break_order = get_random_tie_break_order(agents)
-
-            efx_preserving_agent = get_efx_preserving_agent(agents, items_left, tie_break_order, allocation)
+            efx_preserving_agent = get_efx_preserving_agent(agents, items_left, allocation)
 
             while efx_preserving_agent is None:
                 envy_graph = create_envy_graph(agents, allocation)
@@ -36,7 +33,7 @@ def xp_ece(agents: Agents, items: Items, max_attempts: int = 1000) -> Allocation
                     cycle = nx.find_cycle(envy_graph)
 
                     reallocate_bundles(cycle, allocation)
-                    efx_preserving_agent = get_efx_preserving_agent(agents, items_left, tie_break_order, allocation)
+                    efx_preserving_agent = get_efx_preserving_agent(agents, items_left, allocation)
                 except nx.NetworkXNoCycle:
                     break
 
@@ -52,30 +49,19 @@ def xp_ece(agents: Agents, items: Items, max_attempts: int = 1000) -> Allocation
     raise Exception("No EFX allocation found")
 
 
-def get_random_tie_break_order(agents: Agents) -> list[Agent]:
-    """
-    Returns a random permutaion of `agents`.
-    """
-
-    tie_break_order = agents.get_agents().copy()
-    random.shuffle(tie_break_order)
-
-    return tie_break_order
-
-
-def get_efx_preserving_agent(
-        agents: Agents, 
-        items_left: Items, 
-        tie_break_order: list[Agent], 
-        allocation: Allocation) -> Optional[Agent]:
+def get_efx_preserving_agent(agents: Agents, items_left: Items, allocation: Allocation) -> Optional[Agent]:
     """
     Returns an agent who, after receiving any item, maintains the EFX property of `allocation`. If no such agent
     exists, it returns None.
 
-    If multiple agents preserve the EFX property, the agent earliest in `tie_break_order` has priority.
+    If multiple agents preserve the EFX property, a random one among them is chosen.
     """
 
-    for agent_j in tie_break_order:
+    unchecked_agents = agents.copy()
+
+    while unchecked_agents.size() > 0:
+        agent_j = random.choice(unchecked_agents.get_agents())
+
         if allocation.for_agent(agent_j).size() == 0:
             return agent_j
         else:
@@ -106,6 +92,8 @@ def get_efx_preserving_agent(
                         break
             else:
                 return agent_j
+            
+        unchecked_agents.remove_agent(agent_j)
             
     return None
 
